@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body class="container">
+<h1 th:text="${title}">Default Title</h1>
+
+<nav th:replace="fragments :: navigation"></nav>
+
+        <form method="post" style="max-width:600px;" th:object="${item}">
+	    
+		    <div class="form-group">
+		        <label th:for="name"></label>
+		        <input class="form-control" th:field="*{name}" />
+		        <span th:errors="*{name}" class="error"></span>
+		    </div>
+		    
+		  	<input type="submit" value="Add Item" />
+		</form>
+		
+<!-- 	    <form method="post">
+	    
+			<div th:each="item : ${items}" class="checkbox">
+	        <input type="checkbox" name="itemIds" th:value="${item.id}" th:id="${item.id}"/>
+	      	<label th:for="${item.id}"><span class="item" th:text="${item.name}"></span></label>
+	   		</div>
+			<input type="submit" value="Delete Item" />
+		        
+		</form> -->
+	    
+	    <form method="post">
+	    <table class="table">
+			<tr th:each="item : ${items}">
+			<td>
+		        <input type="checkbox" name="itemIds" th:value="${item.id}" th:id="${item.id}"/>
+
+			</td>
+		    <td>
+			    <label th:for="${item.id}"><span class="item" th:text="${item.name}"></span></label>
+			</td>	
+		    </tr>
+		</table>
+		<input type="submit" value="Delete Item" />
+	  	</form>
+	</body>
+</html>
