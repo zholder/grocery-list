@@ -28,8 +28,8 @@ public class MainController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public String addItems(Model model, @ModelAttribute @Valid Item item, Errors errors, int[] itemIds) { 
-    	
-    	if (errors.hasErrors()){
+    		
+    	if (errors.hasErrors() || (item.getName() == null && itemIds == null)){
     		model.addAttribute("items", ItemData.getItems());
         	model.addAttribute("title", "To Do List");
     		return "index";

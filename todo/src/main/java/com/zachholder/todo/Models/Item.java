@@ -23,6 +23,7 @@ public class Item {
 	}
 
 	public Item() {
+		this.name = null;
         id = nextId;
         nextId++;
 	}
@@ -31,5 +32,7 @@ public class Item {
 		this();
 		this.name = name; 
 	}
+	
+	
 	
 }
