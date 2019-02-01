@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.zachholder.todo.Models.Item;
+import com.zachholder.todo.Models.ItemType;
 import com.zachholder.todo.Models.data.ItemData;
 
 import javax.validation.Valid;
@@ -22,7 +23,8 @@ public class MainController {
 
     	model.addAttribute("items", ItemData.getItems());
     	model.addAttribute("title", "To Do List");
-    	model.addAttribute(new Item());
+    	model.addAttribute("item", new Item());
+        model.addAttribute("itemTypes", ItemType.values());
         return "index";
     }
 
@@ -32,6 +34,7 @@ public class MainController {
     	if (errors.hasErrors() || (item.getName() == null && itemIds == null)){
     		model.addAttribute("items", ItemData.getItems());
         	model.addAttribute("title", "To Do List");
+            model.addAttribute("itemTypes", ItemType.values());
     		return "index";
     	}
     	
