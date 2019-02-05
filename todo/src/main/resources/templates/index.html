@@ -12,7 +12,7 @@
 		        <input class="form-control" th:field="*{name}" />
 		        <span th:errors="*{name}" class="error"></span>
 		    </div>
-			        
+
 		  	<input type="submit" value="Add Item" />
 		</form>
 		
@@ -27,15 +27,9 @@
 			    <label th:for="${item.id}"><span class="item" th:text="${item.name}"></span></label>
 			</td>	
 			
-			<td>
-		        <label th:for="type"></label>
-		        <select th:field="*{item.type}">
-		            <option th:each="itemType : ${itemTypes}"
-		                    th:text="${itemType.name}"
-		                    th:value="${itemType}"></option>
-		        </select>
+			<td th:if="${item.type}" th:text="${item.type.name}">
 			</td>
-	
+				
 		    </tr>
 		</table>
 						
