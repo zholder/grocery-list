@@ -25,6 +25,8 @@ public class MainController {
 	
 	@Autowired
 	private GroceryTypeDao groceryTypeDao;
+	
+	@Autowired
 	private GroceryItemDao groceryItemDao;
 
 	
@@ -54,11 +56,17 @@ public class MainController {
     	}
     	
     	if (itemIds == null && item.getName().length() > 0) {
-        	
-        	ItemData.add(item);
+    		
+    		if (groceryItemDao.findByName(item.getName()) == null ) {
+            	ItemData.add(item);
 
+    		}
+    		else {
+        	System.out.println(groceryItemDao.findByName(item.getName()).getName());
+        	item.setType(groceryItemDao.findByName(item.getName()).getItemType());
+        	ItemData.add(item);
     	}
-    	
+    	}
     	
     	return "redirect:";
     }
