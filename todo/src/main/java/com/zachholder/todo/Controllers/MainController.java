@@ -59,10 +59,8 @@ public class MainController {
     		
     		if (groceryItemDao.findByName(item.getName()) == null ) {
             	ItemData.add(item);
-
     		}
     		else {
-        	System.out.println(groceryItemDao.findByName(item.getName()).getName());
         	item.setType(groceryItemDao.findByName(item.getName()).getItemType());
         	ItemData.add(item);
     	}
