@@ -12,6 +12,8 @@ public class Item {
 
     private ItemType type;
     
+    private Aisle aisle;
+    
 	public String getName() {
 		return name;
 	}
@@ -31,6 +33,16 @@ public class Item {
 	public void setType(ItemType type) {
 		this.type = type;
 	}
+	
+	
+
+	public Aisle getAisle() {
+		return aisle;
+	}
+
+	public void setAisle(Aisle aisle) {
+		this.aisle = aisle;
+	}
 
 	public Item() {
 		this.name = null;
@@ -42,13 +54,5 @@ public class Item {
 		this();
 		this.name = name; 
 	}
-	
-	public Item(String name, ItemType type) {
-		this();
-		this.name = name; 
-		this.type = type;
-	}
-	
-	
 	
 }

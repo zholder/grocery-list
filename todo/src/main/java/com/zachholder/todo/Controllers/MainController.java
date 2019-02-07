@@ -3,18 +3,13 @@ package com.zachholder.todo.Controllers;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.zachholder.todo.Models.Item;
-import com.zachholder.todo.Models.ItemType;
+import com.zachholder.todo.Models.data.AisleDao;
 import com.zachholder.todo.Models.data.GroceryItemDao;
 import com.zachholder.todo.Models.data.GroceryTypeDao;
 import com.zachholder.todo.Models.data.ItemData;
 import com.zachholder.todo.comparators.TypeComparator;
-
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -32,6 +27,8 @@ public class MainController {
 	@Autowired
 	private GroceryItemDao groceryItemDao;
 
+	@Autowired
+	private AisleDao aisleDao;
 	
     @RequestMapping(value = "")
     public String index(Model model) {   
@@ -69,6 +66,7 @@ public class MainController {
     		}
     		else {
         	item.setType(groceryItemDao.findByName(item.getName()).getItemType());
+        	item.setAisle(groceryItemDao.findByName(item.getName()).getAisle());
         	ItemData.add(item);
     	}
     	}
