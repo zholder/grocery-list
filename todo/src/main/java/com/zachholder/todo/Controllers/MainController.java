@@ -10,7 +10,10 @@ import com.zachholder.todo.Models.ItemType;
 import com.zachholder.todo.Models.data.GroceryItemDao;
 import com.zachholder.todo.Models.data.GroceryTypeDao;
 import com.zachholder.todo.Models.data.ItemData;
+import com.zachholder.todo.comparators.TypeComparator;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -31,7 +34,10 @@ public class MainController {
 
 	
     @RequestMapping(value = "")
-    public String index(Model model) {    
+    public String index(Model model) {   
+        TypeComparator comparator = new TypeComparator();
+        ItemData.getItems().sort(comparator);
+        
     	model.addAttribute("items", ItemData.getItems());
     	model.addAttribute("title", "To Do List");
     	model.addAttribute("item", new Item());
@@ -58,6 +64,7 @@ public class MainController {
     	if (itemIds == null && item.getName().length() > 0) {
     		
     		if (groceryItemDao.findByName(item.getName()) == null ) {
+    			item.setType(groceryTypeDao.findById(1).get());
             	ItemData.add(item);
     		}
     		else {
