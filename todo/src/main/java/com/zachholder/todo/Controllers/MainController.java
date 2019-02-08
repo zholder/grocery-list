@@ -9,6 +9,9 @@ import com.zachholder.todo.Models.data.AisleDao;
 import com.zachholder.todo.Models.data.GroceryItemDao;
 import com.zachholder.todo.Models.data.GroceryTypeDao;
 import com.zachholder.todo.Models.data.ItemData;
+import com.zachholder.todo.comparators.AisleComparator;
+import com.zachholder.todo.comparators.CompoundComparator;
+import com.zachholder.todo.comparators.NameComparator;
 import com.zachholder.todo.comparators.TypeComparator;
 
 import javax.validation.Valid;
@@ -31,14 +34,16 @@ public class MainController {
 	private AisleDao aisleDao;
 	
     @RequestMapping(value = "")
-    public String index(Model model) {   
-        TypeComparator comparator = new TypeComparator();
+    public String index(Model model) {  
+    	
+        CompoundComparator comparator = new CompoundComparator();
+        comparator.add(new AisleComparator());
+        comparator.add(new NameComparator());
         ItemData.getItems().sort(comparator);
-        
+
     	model.addAttribute("items", ItemData.getItems());
-    	model.addAttribute("title", "To Do List");
+    	model.addAttribute("title", "Grocery List");
     	model.addAttribute("item", new Item());
-    	model.addAttribute("itemTypes", groceryTypeDao.findAll());
         return "index";
     }
 
@@ -47,7 +52,7 @@ public class MainController {
     	
     	if (errors.hasErrors() || (item.getName() == null && itemIds == null)){
     		model.addAttribute("items", ItemData.getItems());
-        	model.addAttribute("title", "To Do List");
+        	model.addAttribute("title", "Grocery List");
         	model.addAttribute("itemTypes", groceryTypeDao.findAll());
     		return "index";
     	}
@@ -62,6 +67,7 @@ public class MainController {
     		
     		if (groceryItemDao.findByName(item.getName()) == null ) {
     			item.setType(groceryTypeDao.findById(1).get());
+    			item.setAisle(aisleDao.findById(1).get());
             	ItemData.add(item);
     		}
     		else {
