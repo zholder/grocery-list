@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.zachholder.todo.Models.Aisle;
 import com.zachholder.todo.Models.Item;
 import com.zachholder.todo.Models.data.AisleDao;
 import com.zachholder.todo.Models.data.GroceryItemDao;
@@ -92,16 +93,20 @@ public class MainController {
     }
 
     @RequestMapping(value = "edit/{cheeseId}", method = RequestMethod.POST)
-    public String processEditForm(@ModelAttribute @Valid Item item, Errors errors, String name, int typeId, int aisleId, Model model){
-//        if (errors.hasErrors()){
-//            model.addAttribute("categories", categoryDao.findAll());
-//            return "cheese/edit";
-//        }
+    public String processEditForm(@ModelAttribute @Valid Item item, Errors errors, int itemId, Model model){
+    	Item editedItem = ItemData.getById(itemId);
 
-        item.setName(name);
-        item.setType(groceryTypeDao.findById(typeId).get());
-    	item.setAisle(aisleDao.findById(aisleId).get());
+    	if (errors.hasErrors()){
+    		model.addAttribute(editedItem);
+            model.addAttribute("itemTypes", groceryTypeDao.findAll());
+            model.addAttribute("aisles", aisleDao.findAll());
+            return "cheese/edit/" + itemId;
+       }
+
+        editedItem.setName(item.getName());
+        editedItem.setType(item.getType());
+    	editedItem.setAisle(item.getAisle());
         return "redirect:/";
     }
-   
+
 }
