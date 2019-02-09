@@ -21,11 +21,12 @@
 			<tr th:each="item : ${items}">
 			<td>
 		        <input type="checkbox" name="itemIds" th:value="${item.id}" th:id="${item.id}"/>
-
 			</td>
 		    <td>
-			    <label th:for="${item.id}"><span class="item" th:text="${item.name}"></span></label>
-			</td>	
+			    <label th:for="${item.id}">
+ 					<a th:href="@{'/edit/' + ${item.id}}" th:text="${item.name}"></a>
+			    </label>
+			</td>				
 			
 			<td th:if="${item.type}" th:text="${item.type.name}">
 			</td>

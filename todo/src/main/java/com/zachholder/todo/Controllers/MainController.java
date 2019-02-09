@@ -1,6 +1,7 @@
 package com.zachholder.todo.Controllers;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -79,6 +80,28 @@ public class MainController {
     	
     	return "redirect:";
     }
+    
+    @RequestMapping(value = "edit/{itemId}", method = RequestMethod.GET)
+    public String displayEditForm(Model model, @PathVariable int itemId){
 
+        Item item = ItemData.getById(itemId);
+        model.addAttribute(item);
+        model.addAttribute("itemTypes", groceryTypeDao.findAll());
+        model.addAttribute("aisles", aisleDao.findAll());
+        return  "item";
+    }
+
+    @RequestMapping(value = "edit/{cheeseId}", method = RequestMethod.POST)
+    public String processEditForm(@ModelAttribute @Valid Item item, Errors errors, String name, int typeId, int aisleId, Model model){
+//        if (errors.hasErrors()){
+//            model.addAttribute("categories", categoryDao.findAll());
+//            return "cheese/edit";
+//        }
+
+        item.setName(name);
+        item.setType(groceryTypeDao.findById(typeId).get());
+    	item.setAisle(aisleDao.findById(aisleId).get());
+        return "redirect:/";
+    }
    
 }

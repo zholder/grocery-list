@@ -33,8 +33,6 @@ public class Item {
 	public void setType(ItemType type) {
 		this.type = type;
 	}
-	
-	
 
 	public Aisle getAisle() {
 		return aisle;

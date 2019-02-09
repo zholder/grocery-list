@@ -6,6 +6,37 @@
 
 <nav th:replace="fragments :: navigation"></nav>
 
+<form method="post" style="max-width:600px" th:object="${item}">
+<input type="hidden" th:value="${item.id}" name="itemId" />
+
+    <div class="form-group">
+        <label th:for="name">Name</label>
+        <input class="form-control" th:field="*{name}" />
+        <span th:errors="*{name}" class="error"></span>
+    </div>
+
+     <div class="form-group">
+        <label th:for="itemType">Type</label>
+        <select name="itemTypeId">
+            <option th:each="itemType : ${itemTypes}"
+                    th:text="${itemType.name}"
+                    th:value="${itemType.id}" selected></option>
+        </select>
+    </div>
+
+     <div class="form-group">
+        <label th:for="aisle">Type</label>
+        <select name="aisleId">
+            <option th:each="aisle : ${aisles}"
+                    th:text="${aisle.name}"
+                    th:value="${aisle.id}" selected></option>
+        </select>
+    </div>
+
+			
+    <input type="submit" value="Submit Edit" />
+</form>
+
 	  	
-	</body>
+</body>
 </html>
