@@ -76,7 +76,7 @@ public class MainController {
         	item.setType(groceryItemDao.findByName(item.getName()).getItemType());
         	item.setAisle(groceryItemDao.findByName(item.getName()).getAisle());
         	ItemData.add(item);
-    	}
+    		}
     	}
     	
     	return "redirect:";
@@ -92,17 +92,17 @@ public class MainController {
         return  "item";
     }
 
-    @RequestMapping(value = "edit/{cheeseId}", method = RequestMethod.POST)
-    public String processEditForm(@ModelAttribute @Valid Item item, Errors errors, int itemId, Model model){
-    	Item editedItem = ItemData.getById(itemId);
+    @RequestMapping(value = "edit/{itemId}", method = RequestMethod.POST)
+    public String processEditForm(@ModelAttribute @Valid Item item, Errors errors, @PathVariable int itemId, Model model){
 
     	if (errors.hasErrors()){
-    		model.addAttribute(editedItem);
+    		model.addAttribute(item);
             model.addAttribute("itemTypes", groceryTypeDao.findAll());
             model.addAttribute("aisles", aisleDao.findAll());
-            return "cheese/edit/" + itemId;
+            return "item";
        }
-
+    	
+    	Item editedItem = ItemData.getById(itemId);
         editedItem.setName(item.getName());
         editedItem.setType(item.getType());
     	editedItem.setAisle(item.getAisle());

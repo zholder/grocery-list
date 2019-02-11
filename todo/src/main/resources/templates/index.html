@@ -10,7 +10,7 @@
 		    <div class="form-group">
 		        <label th:for="name"></label>
 		        <input class="form-control" th:field="*{name}" />
-		        <span th:errors="*{name}" class="error"></span>
+		        <span th:errors="${item.name}" class="error"></span>
 		    </div>
 
 		  	<input type="submit" value="Add Item" />
