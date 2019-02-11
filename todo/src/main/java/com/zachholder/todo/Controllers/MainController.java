@@ -1,9 +1,11 @@
 package com.zachholder.todo.Controllers;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.zachholder.todo.Models.Aisle;
 import com.zachholder.todo.Models.Item;
 import com.zachholder.todo.Models.data.AisleDao;
 import com.zachholder.todo.Models.data.GroceryItemDao;
@@ -74,11 +76,37 @@ public class MainController {
         	item.setType(groceryItemDao.findByName(item.getName()).getItemType());
         	item.setAisle(groceryItemDao.findByName(item.getName()).getAisle());
         	ItemData.add(item);
-    	}
+    		}
     	}
     	
     	return "redirect:";
     }
+    
+    @RequestMapping(value = "edit/{itemId}", method = RequestMethod.GET)
+    public String displayEditForm(Model model, @PathVariable int itemId){
 
-   
+        Item item = ItemData.getById(itemId);
+        model.addAttribute(item);
+        model.addAttribute("itemTypes", groceryTypeDao.findAll());
+        model.addAttribute("aisles", aisleDao.findAll());
+        return  "item";
+    }
+
+    @RequestMapping(value = "edit/{itemId}", method = RequestMethod.POST)
+    public String processEditForm(@ModelAttribute @Valid Item item, Errors errors, @PathVariable int itemId, Model model){
+
+    	if (errors.hasErrors()){
+    		model.addAttribute(item);
+            model.addAttribute("itemTypes", groceryTypeDao.findAll());
+            model.addAttribute("aisles", aisleDao.findAll());
+            return "item";
+       }
+    	
+    	Item editedItem = ItemData.getById(itemId);
+        editedItem.setName(item.getName());
+        editedItem.setType(item.getType());
+    	editedItem.setAisle(item.getAisle());
+        return "redirect:/";
+    }
+
 }
