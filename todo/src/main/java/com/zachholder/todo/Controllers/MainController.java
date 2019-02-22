@@ -73,8 +73,8 @@ public class MainController {
             	ItemData.add(item);
     		}
     		else {
-        	item.setType(groceryItemDao.findByName(item.getName()).getItemType());
-        	item.setAisle(groceryItemDao.findByName(item.getName()).getAisle());
+        	item.setType(groceryItemDao.findByName(item.getName().toLowerCase()).getItemType());
+        	item.setAisle(groceryItemDao.findByName(item.getName().toLowerCase()).getAisle());
         	ItemData.add(item);
     		}
     	}
