@@ -11,7 +11,7 @@ public class Recipe {
 
     @Size(min=2, max=20)
 	private String name;
-	private List<Item> recipe;
+	private List<Item> recipeItems;
 
 	public Recipe() {
 		this.name = null;
@@ -19,14 +19,14 @@ public class Recipe {
         nextId++;
 	}
 	
-	public Recipe(String name, List<Item> recipe) {
+	public Recipe(String name, List<Item> recipeItems) {
 		super();
 		this.name = name;
-		this.recipe = recipe;
+		this.recipeItems = recipeItems;
 	}
 
 	public void addItem(Item item) {
-		recipe.add(item);
+		recipeItems.add(item);
 	}
 	
 	public String getName() {
@@ -37,8 +37,8 @@ public class Recipe {
 		this.name = name;
 	}
 
-	public void setRecipe(List<Item> recipe) {
-		this.recipe = recipe;
+	public void setRecipe(List<Item> recipeItems) {
+		this.recipeItems = recipeItems;
 	}
 
 	public int getId() {
@@ -50,7 +50,7 @@ public class Recipe {
 	}
 	
 	public List<Item> getRecipe() {
-		return recipe;
+		return recipeItems;
 	}
 
 	
