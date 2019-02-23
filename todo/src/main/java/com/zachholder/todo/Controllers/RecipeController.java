@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.zachholder.todo.Models.Item;
 import com.zachholder.todo.Models.Recipe;
-import com.zachholder.todo.Models.data.ItemData;
 import com.zachholder.todo.Models.data.RecipeData;
 
 @Controller
@@ -24,11 +22,18 @@ public class RecipeController {
     	model.addAttribute("recipes", RecipeData.getRecipes());
     	model.addAttribute("title", "Recipes");
     	model.addAttribute("recipe", new Recipe());
-        return "recipe";
+        return "recipe/recipe";
     }
     
     @RequestMapping(value="", method = RequestMethod.POST)
-    public String addRecipe(Model model, @ModelAttribute Recipe recipe) {
+    public String addRecipe(Model model, @Valid @ModelAttribute Recipe recipe, Errors errors) {
+    	
+    	if (errors.hasErrors()) {
+    		model.addAttribute("recipes", RecipeData.getRecipes());
+        	model.addAttribute("title", "Recipes");
+        	return "recipe/recipe";
+    	}
+    	
     	RecipeData.add(recipe);
     	return "redirect:/recipe";
     }

@@ -46,7 +46,7 @@ public class MainController {
     	model.addAttribute("items", ItemData.getItems());
     	model.addAttribute("title", "Grocery List");
     	model.addAttribute("item", new Item());
-        return "index";
+        return "item/index";
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
@@ -56,7 +56,7 @@ public class MainController {
     		model.addAttribute("items", ItemData.getItems());
         	model.addAttribute("title", "Grocery List");
         	model.addAttribute("itemTypes", groceryTypeDao.findAll());
-    		return "index";
+    		return "item/index";
     	}
     	
     	if (itemIds != null) {
@@ -89,7 +89,7 @@ public class MainController {
         model.addAttribute(item);
         model.addAttribute("itemTypes", groceryTypeDao.findAll());
         model.addAttribute("aisles", aisleDao.findAll());
-        return  "item";
+        return  "item/item";
     }
 
     @RequestMapping(value = "edit/{itemId}", method = RequestMethod.POST)
@@ -99,7 +99,7 @@ public class MainController {
     		model.addAttribute(item);
             model.addAttribute("itemTypes", groceryTypeDao.findAll());
             model.addAttribute("aisles", aisleDao.findAll());
-            return "item";
+            return "item/item";
        }
     	
     	Item editedItem = ItemData.getById(itemId);
