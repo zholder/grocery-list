@@ -65,10 +65,28 @@ public class RecipeController {
     }
     
     @RequestMapping(value = "{recipeId}", method = RequestMethod.POST)
-    public String addRecipeItems(Model model, @Valid @ModelAttribute Item item, Errors errors, @ModelAttribute Recipe recipe) { 
+    public String addRecipeItems(Model model, @Valid @ModelAttribute Item item, Errors errors, @PathVariable int recipeId, int[] itemIds) { 
     	Item recipeItem = new Item(item.getName());
+    	Recipe recipe = RecipeData.getById(recipeId);
+
+    	if (errors.hasErrors() || (item.getName() == null && itemIds == null)){
+    		model.addAttribute(recipe);
+        	model.addAttribute("title", recipe.getName());
+        	model.addAttribute("item", item);
+    		return "recipe/recipeitems/";
+    	}
     	
-    	if (groceryItemDao.findByName(recipeItem.getName()) == null ) {
+    	
+    	if (itemIds != null) {
+	    	for (int itemId : itemIds) {
+	    		recipe.removeItem(itemId);
+	            ItemData.remove(itemId);
+	        }
+    	}
+    	
+    	if (itemIds == null && recipeItem.getName().length() > 0) {
+    		
+    		if (groceryItemDao.findByName(recipeItem.getName()) == null ) {
     		recipeItem.setType(groceryTypeDao.findById(1).get());
     		recipeItem.setAisle(aisleDao.findById(1).get());
     		}
@@ -79,7 +97,9 @@ public class RecipeController {
     		}
     
     	ItemData.add(recipeItem);
-    	return "redirect:";
+    	recipe.addItem(recipeItem);
+    	}
+    	return "redirect:/recipe/" + recipeId;
     }
     	
 }

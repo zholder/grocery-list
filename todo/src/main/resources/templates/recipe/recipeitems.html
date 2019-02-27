@@ -17,7 +17,29 @@
 		</form>
 		
 		
+		<form th:if="${recipe.recipeItems.size()}" method="post">
+	    <table class="table">
+			<tr th:each="item : ${recipe.recipeItems}">
+			<td>
+		        <input type="checkbox" name="itemIds" th:value="${item.id}" th:id="${item.id}"/>
+			</td>
+		    <td>
+			    <label th:for="${item.id}">
+ 					<a th:href="@{'/edit/' + ${item.id}}" th:text="${item.name}"></a>
+			    </label>
+			</td>				
+			
+			<td th:if="${item.type}" th:text="${item.type.name}">
+			</td>
+				
+			<td th:if="${item.aisle}" th:text="${item.aisle.name}">
+			</td>
+		    </tr>
+		</table>
+						
 		
+		<input type="submit" value="Delete Item" />
+	  	</form>
 	  	
 	</body>
 </html>

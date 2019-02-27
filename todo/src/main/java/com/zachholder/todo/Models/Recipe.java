@@ -1,5 +1,6 @@
 package com.zachholder.todo.Models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.Size;
@@ -11,7 +12,7 @@ public class Recipe {
 
     @Size(min=2, max=20)
 	private String name;
-	private List<Item> recipeItems;
+	private static ArrayList<Item> recipeItems = new ArrayList<Item>();
 
 	public Recipe() {
 		this.name = null;
@@ -19,15 +20,31 @@ public class Recipe {
         nextId++;
 	}
 	
-	public Recipe(String name, List<Item> recipeItems) {
+	public Recipe(String name) {
 		super();
 		this.name = name;
-		this.recipeItems = recipeItems;
 	}
 
 	public void addItem(Item item) {
 		recipeItems.add(item);
 	}
+	
+    public void removeItem(int id) {
+        Item itemToRemove = getByItemId(id);
+        recipeItems.remove(itemToRemove);
+    }
+	
+    public static Item getByItemId(int id) {
+
+        Item theItem = null;
+
+        for (Item candidateItem : recipeItems) {
+            if (candidateItem.getId() == id) {
+            	theItem = candidateItem;
+            }
+        }
+        return theItem;
+    }
 	
 	public String getName() {
 		return name;
@@ -35,10 +52,6 @@ public class Recipe {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public void setRecipe(List<Item> recipeItems) {
-		this.recipeItems = recipeItems;
 	}
 
 	public int getId() {
@@ -49,7 +62,7 @@ public class Recipe {
 		this.id = id;
 	}
 	
-	public List<Item> getRecipe() {
+	public List<Item> getRecipeItems() {
 		return recipeItems;
 	}
 

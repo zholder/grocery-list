@@ -20,7 +20,7 @@
  	    <table class="table">
 			<tr th:each="recipe : ${recipes}">
 			<td>
-				<div th:text="${recipe.name}"></div>
+				<a th:href="@{'/recipe/' + ${recipe.id}}" th:text="${recipe.name}"></a>
 			</td>				
 			
 		    </tr>
