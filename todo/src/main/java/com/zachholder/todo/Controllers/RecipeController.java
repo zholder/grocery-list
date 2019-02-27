@@ -2,6 +2,7 @@ package com.zachholder.todo.Controllers;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -12,12 +13,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.zachholder.todo.Models.Item;
 import com.zachholder.todo.Models.Recipe;
+import com.zachholder.todo.Models.data.AisleDao;
+import com.zachholder.todo.Models.data.GroceryItemDao;
+import com.zachholder.todo.Models.data.GroceryTypeDao;
+import com.zachholder.todo.Models.data.ItemData;
 import com.zachholder.todo.Models.data.RecipeData;
 
 @Controller
 @RequestMapping(value = "recipe")
 public class RecipeController {
 
+	@Autowired
+	private GroceryTypeDao groceryTypeDao;
+	
+	@Autowired
+	private GroceryItemDao groceryItemDao;
+	
+	@Autowired
+	private AisleDao aisleDao;
+	
     @RequestMapping(value = "")
     public String index(Model model) {  
     	
@@ -53,7 +67,18 @@ public class RecipeController {
     @RequestMapping(value = "{recipeId}", method = RequestMethod.POST)
     public String addRecipeItems(Model model, @Valid @ModelAttribute Item item, Errors errors, @ModelAttribute Recipe recipe) { 
     	Item recipeItem = new Item(item.getName());
-    	recipe.addItem(recipeItem);
+    	
+    	if (groceryItemDao.findByName(recipeItem.getName()) == null ) {
+    		recipeItem.setType(groceryTypeDao.findById(1).get());
+    		recipeItem.setAisle(aisleDao.findById(1).get());
+    		}
+    	
+    		else {
+    		recipeItem.setType(groceryItemDao.findByName(recipeItem.getName().toLowerCase()).getItemType());
+    		recipeItem.setAisle(groceryItemDao.findByName(recipeItem.getName().toLowerCase()).getAisle());
+    		}
+    
+    	ItemData.add(recipeItem);
     	return "redirect:";
     }
     	
