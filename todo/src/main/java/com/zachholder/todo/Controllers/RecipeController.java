@@ -73,7 +73,7 @@ public class RecipeController {
     		model.addAttribute(recipe);
         	model.addAttribute("title", recipe.getName());
         	model.addAttribute("item", item);
-    		return "recipe/recipeitems/";
+    		return "recipe/recipeitems";
     	}
     	
     	
