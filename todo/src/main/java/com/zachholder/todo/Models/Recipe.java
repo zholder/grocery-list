@@ -10,7 +10,7 @@ public class Recipe {
     private int id;
     private static int nextId = 1;
 
-    @Size(min=2, max=20)
+    @Size(min=2, max=40)
 	private String name;
 	private static ArrayList<Item> recipeItems = new ArrayList<Item>();
 

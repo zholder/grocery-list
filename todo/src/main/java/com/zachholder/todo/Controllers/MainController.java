@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.zachholder.todo.Models.Aisle;
 import com.zachholder.todo.Models.Item;
 import com.zachholder.todo.Models.data.AisleDao;
 import com.zachholder.todo.Models.data.GroceryItemDao;
@@ -14,7 +13,6 @@ import com.zachholder.todo.Models.data.ItemData;
 import com.zachholder.todo.comparators.AisleComparator;
 import com.zachholder.todo.comparators.CompoundComparator;
 import com.zachholder.todo.comparators.NameComparator;
-import com.zachholder.todo.comparators.TypeComparator;
 
 import javax.validation.Valid;
 
@@ -78,7 +76,6 @@ public class MainController {
         	ItemData.add(item);
     		}
     	}
-    	
     	return "redirect:";
     }
     

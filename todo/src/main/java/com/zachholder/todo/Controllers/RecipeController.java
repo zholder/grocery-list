@@ -42,16 +42,31 @@ public class RecipeController {
     }
     
     @RequestMapping(value="", method = RequestMethod.POST)
-    public String addRecipe(Model model, @Valid @ModelAttribute Recipe recipe, Errors errors) {
-    	
-    	if (errors.hasErrors()) {
+    public String addRecipe(Model model, @Valid @ModelAttribute Recipe recipe, Errors errors, int[] recipeIds) {
+    	System.out.println(recipe.getName() == null && recipeIds == null);
+    	if (errors.hasErrors() || (recipe.getName() == null && recipeIds == null)) {
     		model.addAttribute("recipes", RecipeData.getRecipes());
         	model.addAttribute("title", "My Recipes");
         	return "recipe/recipe";
+
     	}
     	
-    	RecipeData.add(recipe);
-    	return "redirect:/recipe/" + recipe.getId();
+    	if (recipeIds != null) {
+	    	for (int recipeId : recipeIds) {
+	    		Recipe currentRecipe = RecipeData.getById(recipeId);
+	    			for (Item recipeItem: currentRecipe.getRecipeItems()) {
+	    				ItemData.add(recipeItem);
+	    			}
+	    		}
+	        }
+    	
+    	if (recipeIds == null && recipe.getName().length() > 0) {
+    		RecipeData.add(recipe);
+        	return "redirect:/recipe/" + recipe.getId();
+    	}
+    	
+    	return "recipe/recipe";
+
     }
     
     @RequestMapping(value = "{recipeId}", method = RequestMethod.GET)

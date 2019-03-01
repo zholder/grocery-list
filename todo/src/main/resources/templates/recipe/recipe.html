@@ -17,15 +17,25 @@
 		  	<input type="submit" value="Add Recipe" />
 		</form>
 		
-		
+		<form method="post">
  	    <table class="table">
 			<tr th:each="recipe : ${recipes}">
+			
 			<td>
-				<a th:href="@{'/recipe/' + ${recipe.id}}" th:text="${recipe.name}"></a>
+		        <input type="checkbox" name="recipeIds" th:value="${recipe.id}" th:id="${recipe.id}"/>
+			</td>
+			
+			<td>
+				<label th:for="${recipe.id}">
+					<a th:href="@{'/recipe/' + ${recipe.id}}" th:text="${recipe.name}"></a>
+				</label>
 			</td>				
 			
 		    </tr>
 		</table>
+								
+		<input type="submit" value="Add Recipe(s) to List" />
+	  	</form>
 	  	
 	</body>
 </html>
