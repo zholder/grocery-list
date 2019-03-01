@@ -44,7 +44,7 @@ public class MainController {
         ItemData.getItems().sort(comparator);
 
     	model.addAttribute("items", ItemData.getItems());
-    	model.addAttribute("title", "Grocery List");
+    	model.addAttribute("title", "My List");
     	model.addAttribute("item", new Item());
         return "item/index";
     }
@@ -54,7 +54,7 @@ public class MainController {
     	
     	if (errors.hasErrors() || (item.getName() == null && itemIds == null)){
     		model.addAttribute("items", ItemData.getItems());
-        	model.addAttribute("title", "Grocery List");
+        	model.addAttribute("title", "My List");
         	model.addAttribute("itemTypes", groceryTypeDao.findAll());
     		return "item/index";
     	}

@@ -36,7 +36,7 @@ public class RecipeController {
     public String index(Model model) {  
     	
     	model.addAttribute("recipes", RecipeData.getRecipes());
-    	model.addAttribute("title", "Recipes");
+    	model.addAttribute("title", "My Recipes");
     	model.addAttribute("recipe", new Recipe());
         return "recipe/recipe";
     }
@@ -46,7 +46,7 @@ public class RecipeController {
     	
     	if (errors.hasErrors()) {
     		model.addAttribute("recipes", RecipeData.getRecipes());
-        	model.addAttribute("title", "Recipes");
+        	model.addAttribute("title", "My Recipes");
         	return "recipe/recipe";
     	}
     	
