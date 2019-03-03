@@ -43,7 +43,6 @@ public class RecipeController {
     
     @RequestMapping(value="", method = RequestMethod.POST)
     public String addRecipe(Model model, @Valid @ModelAttribute Recipe recipe, Errors errors, int[] recipeIds) {
-    	
      	if (errors.hasErrors() || (recipe.getName() == null && recipeIds == null)) {
     		model.addAttribute("recipes", RecipeData.getRecipes());
         	model.addAttribute("title", "My Recipes");
@@ -57,6 +56,7 @@ public class RecipeController {
 	    				ItemData.add(recipeItem);
 	    			}
 	    		}
+	    		return "redirect:/";
 	        }
     	
     	if (recipeIds == null && recipe.getName().length() > 0) {
@@ -107,9 +107,8 @@ public class RecipeController {
     		recipeItem.setType(groceryItemDao.findByName(recipeItem.getName().toLowerCase()).getItemType());
     		recipeItem.setAisle(groceryItemDao.findByName(recipeItem.getName().toLowerCase()).getAisle());
     		}
-    		
-	    	ItemData.add(recipeItem);
 	    	recipe.addItem(recipeItem);
+	    	ItemData.add(recipeItem);
     	}
     	return "redirect:/recipe/" + recipeId;
     }

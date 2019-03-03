@@ -12,13 +12,12 @@ public class Recipe {
 
     @Size(min=2, max=40)
 	private String name;
-	private static ArrayList<Item> recipeItems;
+	private ArrayList<Item> recipeItems = new ArrayList<Item> ();
 
 	public Recipe() {
 		this.name = null;
         id = nextId;
         nextId++;
-        Recipe.recipeItems = new ArrayList<Item>();
 	}
 	
 	public Recipe(String name) {
@@ -27,18 +26,17 @@ public class Recipe {
 	}
 
 	public void addItem(Item item) {
-		recipeItems.add(item);
+		this.recipeItems.add(item);
 	}
 	
     public void removeItem(int id) {
         Item itemToRemove = getByItemId(id);
-        recipeItems.remove(itemToRemove);
+        this.recipeItems.remove(itemToRemove);
     }
 	
-    public static Item getByItemId(int id) {
+    public  Item getByItemId(int id) {
 
         Item theItem = null;
-
         for (Item candidateItem : recipeItems) {
             if (candidateItem.getId() == id) {
             	theItem = candidateItem;
