@@ -12,12 +12,13 @@ public class Recipe {
 
     @Size(min=2, max=40)
 	private String name;
-	private static ArrayList<Item> recipeItems = new ArrayList<Item>();
+	private static ArrayList<Item> recipeItems;
 
 	public Recipe() {
 		this.name = null;
         id = nextId;
         nextId++;
+        Recipe.recipeItems = new ArrayList<Item>();
 	}
 	
 	public Recipe(String name) {

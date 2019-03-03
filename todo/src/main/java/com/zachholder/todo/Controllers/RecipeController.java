@@ -43,12 +43,11 @@ public class RecipeController {
     
     @RequestMapping(value="", method = RequestMethod.POST)
     public String addRecipe(Model model, @Valid @ModelAttribute Recipe recipe, Errors errors, int[] recipeIds) {
-    	System.out.println(recipe.getName() == null && recipeIds == null);
-    	if (errors.hasErrors() || (recipe.getName() == null && recipeIds == null)) {
+    	
+     	if (errors.hasErrors() || (recipe.getName() == null && recipeIds == null)) {
     		model.addAttribute("recipes", RecipeData.getRecipes());
         	model.addAttribute("title", "My Recipes");
         	return "recipe/recipe";
-
     	}
     	
     	if (recipeIds != null) {
@@ -66,7 +65,6 @@ public class RecipeController {
     	}
     	
     	return "recipe/recipe";
-
     }
     
     @RequestMapping(value = "{recipeId}", method = RequestMethod.GET)
@@ -83,14 +81,13 @@ public class RecipeController {
     public String addRecipeItems(Model model, @Valid @ModelAttribute Item item, Errors errors, @PathVariable int recipeId, int[] itemIds) { 
     	Item recipeItem = new Item(item.getName());
     	Recipe recipe = RecipeData.getById(recipeId);
-
+    	
     	if (errors.hasErrors() || (item.getName() == null && itemIds == null)){
     		model.addAttribute(recipe);
         	model.addAttribute("title", recipe.getName());
         	model.addAttribute("item", item);
     		return "recipe/recipeitems";
     	}
-    	
     	
     	if (itemIds != null) {
 	    	for (int itemId : itemIds) {
@@ -110,9 +107,9 @@ public class RecipeController {
     		recipeItem.setType(groceryItemDao.findByName(recipeItem.getName().toLowerCase()).getItemType());
     		recipeItem.setAisle(groceryItemDao.findByName(recipeItem.getName().toLowerCase()).getAisle());
     		}
-    
-    	ItemData.add(recipeItem);
-    	recipe.addItem(recipeItem);
+    		
+	    	ItemData.add(recipeItem);
+	    	recipe.addItem(recipeItem);
     	}
     	return "redirect:/recipe/" + recipeId;
     }
