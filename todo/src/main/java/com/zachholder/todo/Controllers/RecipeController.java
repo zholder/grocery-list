@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.zachholder.todo.Models.Item;
 import com.zachholder.todo.Models.Recipe;
@@ -67,6 +68,13 @@ public class RecipeController {
     	return "recipe/recipe";
     }
     
+    @RequestMapping(value = "", method = RequestMethod.POST, params="recipeId")
+    public String deleteRecipe(Model model, @RequestParam int recipeId){
+    	RecipeData.remove(RecipeData.getById(recipeId));
+    	return "redirect:/recipe";
+    }
+
+    
     @RequestMapping(value = "{recipeId}", method = RequestMethod.GET)
     public String displayRecipeForm(Model model, @PathVariable int recipeId){
 
@@ -92,7 +100,6 @@ public class RecipeController {
     	if (itemIds != null) {
 	    	for (int itemId : itemIds) {
 	    		recipe.removeItem(itemId);
-	            ItemData.remove(itemId);
 	        }
     	}
     	
@@ -107,8 +114,8 @@ public class RecipeController {
     		recipeItem.setType(groceryItemDao.findByName(recipeItem.getName().toLowerCase()).getItemType());
     		recipeItem.setAisle(groceryItemDao.findByName(recipeItem.getName().toLowerCase()).getAisle());
     		}
+    		ItemData.add(recipeItem);
 	    	recipe.addItem(recipeItem);
-	    	ItemData.add(recipeItem);
     	}
     	return "redirect:/recipe/" + recipeId;
     }

@@ -2,7 +2,6 @@ package com.zachholder.todo.Models.data;
 
 import java.util.ArrayList;
 
-import com.zachholder.todo.Models.Item;
 import com.zachholder.todo.Models.Recipe;
 
 public class RecipeData {
@@ -15,6 +14,10 @@ public class RecipeData {
 
 	public static void add(Recipe recipe) {
 		recipes.add(recipe);
+	}
+	
+	public static void remove(Recipe recipe) {
+		recipes.remove(recipe);
 	}
 	
     public static Recipe getById(int id) {

@@ -20,21 +20,26 @@
 		<form method="post">
  	    <table class="table">
 			<tr th:each="recipe : ${recipes}">
-			
 			<td>
 		        <input type="checkbox" name="recipeIds" th:value="${recipe.id}" th:id="${recipe.id}"/>
 			</td>
 			
 			<td>
 				<label th:for="${recipe.id}">
-					<a th:href="@{'/recipe/' + ${recipe.id}}" th:text="${recipe.name}"></a>
+					<a th:href="@{'recipe/' + ${recipe.id}}" th:text="${recipe.name}"></a>
 				</label>
-			</td>				
+				
+			</td>	
+			
+			<td>
+				<label th:for="${recipe.id}">
+					<button type="submit" name="recipeId" th:value="${recipe.id}" class="fas fa-trash-alt"></button>
+				</label>
+			</td>			
 			
 		    </tr>
 		</table>
-								
-		<input type="submit" value="Add Recipe(s) to List" />
+		<input th:if="${recipes.size()}" type="submit" value="Add Recipe(s) to List" />			
 	  	</form>
 	  	
 	</body>
