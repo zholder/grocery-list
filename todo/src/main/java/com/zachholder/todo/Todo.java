@@ -10,4 +10,3 @@ public class Todo {
 		SpringApplication.run(Todo.class, args);
 	}
 }
-
