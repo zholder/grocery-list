@@ -30,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .authorizeRequests()
 //                URLs below would be allowed without authentication
-                .antMatchers("/css/**").permitAll() 
+                .antMatchers("/css/**", "/signup/**").permitAll() 
                 .anyRequest().authenticated()
                 .and()
             .formLogin()
