@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.Size;
 
 @Entity
-public class User{
+public class User {
 	
 	@Id
     private int id;
@@ -78,6 +78,7 @@ public class User{
 	public User() {
         id = nextId;
         nextId++;
+        this.enabled = true;
 	}
 	
 	public User(String firstName, String lastName, String email, String password) {
@@ -86,7 +87,6 @@ public class User{
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.enabled = true;
 	}
 
 }

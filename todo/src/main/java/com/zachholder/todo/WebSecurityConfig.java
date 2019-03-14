@@ -22,7 +22,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     	authenticationMgr.jdbcAuthentication().dataSource(dataSource)
     	.passwordEncoder(new BCryptPasswordEncoder())
 		.usersByUsernameQuery("select email, password, enabled from user where email=?")
-	     .authoritiesByUsernameQuery("select login, 'ROLE_USER' from users where login=?");
+	    .authoritiesByUsernameQuery("select email, 'ROLE_USER' from user where email=?");
     }
 
     
