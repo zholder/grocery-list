@@ -1,9 +1,14 @@
 package com.zachholder.todo.Models;
 
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.validation.constraints.Size;
 
-public class User {
+@Entity
+public class User{
 	
+	@Id
     private int id;
     private static int nextId = 1;
     
@@ -16,8 +21,10 @@ public class User {
     @Size(min=1, max=30)
 	private String email;
     
-    @Size(min=6, max=20)
+//    @Size(min=6, max=75)
 	private String password;
+
+    private boolean enabled;
 
 	public int getId() {
 		return id;
@@ -50,23 +57,36 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	public String getPassword() {
+		return password;
+	}
 
 	public void setPassword(String password) {
 		this.password = password;
 	}
     
+	
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
 	public User() {
         id = nextId;
         nextId++;
 	}
 	
 	public User(String firstName, String lastName, String email, String password) {
-        id = nextId;
-        nextId++;
+        super();
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.enabled = true;
 	}
 
 }

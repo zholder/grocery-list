@@ -7,12 +7,32 @@
 
 <h1 th:text="${title}">Grocery List</h1>
 
-        <form th:action="@{/login}" method="post">
-            <div><label> First Name : <input type="text" name="firstname"/> </label></div>
-            <div><label> Last Name : <input type="text" name="lastname"/> </label></div>
-            <div><label> Email: <input type="email" name="email"/> </label></div>
-            <div><label> Password: <input type="password" name="password"/> </label></div>
-            <div><label> Confirm Password: <input type="password" name="password"/> </label></div>
+        <form th:object="${user}" method="post">
+        
+            <div>
+            	<label> First Name : <input type="text" name="firstName"/> </label>
+            	<span th:errors="${user.firstName}" class="error"></span>
+            	
+            </div>
+            <div>
+            	<label> Last Name : <input type="text" name="lastName"/> </label>
+            	<span th:errors="${user.lastName}" class="error"></span>
+            </div>
+            <div>
+            	<label> Email: <input type="email" name="email"/> </label>
+            	<span th:errors="${user.email}" class="error"></span>
+           	</div>
+            <div>
+            	<label> Password: <input type="password" name="password"/> </label>
+            	<span th:errors="${user.password}" class="error"></span>
+            </div>
+            <div>
+            	<label> Confirm Password: <input type="password"/> </label>
+            </div>
             
             <div><input type="submit" value="Register"/></div>
         </form>
+
+	</body>
+</html>
+                
