@@ -2,26 +2,34 @@ package com.zachholder.todo.Models;
 
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 
 @Entity
 public class User {
 	
+
 	@Id
+	@GeneratedValue
     private int id;
-    private static int nextId = 1;
-    
+	    
+	@NotNull
     @Size(min=1, max=30)
 	private String firstName;
 
+	@NotNull
     @Size(min=1, max=50)
 	private String lastName;
     
+	@NotNull
     @Size(min=1, max=30)
 	private String email;
     
-//    @Size(min=6, max=75)
+	@NotNull
+    @Size(min=6, max=250, message ="Password must be between 6 and 20 character")
 	private String password;
 
     private boolean enabled;
@@ -76,8 +84,6 @@ public class User {
 	}
 
 	public User() {
-        id = nextId;
-        nextId++;
         this.enabled = true;
 	}
 	

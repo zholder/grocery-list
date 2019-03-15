@@ -10,17 +10,18 @@
         <form th:object="${user}" method="post">
         
             <div>
-            	<label> First Name : <input type="text" name="firstName"/> </label>
+            	<label> First Name : <input type="text" name="firstName" th:value="${user.firstName}"/> </label>
             	<span th:errors="${user.firstName}" class="error"></span>
             	
             </div>
             <div>
-            	<label> Last Name : <input type="text" name="lastName"/> </label>
+            	<label> Last Name : <input type="text" name="lastName" th:value="${user.lastName}"/> </label>
             	<span th:errors="${user.lastName}" class="error"></span>
             </div>
             <div>
-            	<label> Email: <input type="email" name="email"/> </label>
+            	<label> Email: <input type="email" name="email" th:value="${user.email}"/> </label>
             	<span th:errors="${user.email}" class="error"></span>
+            	<span th:text="${error}" class="error"></span>
            	</div>
             <div>
             	<label> Password: <input type="password" name="password"/> </label>

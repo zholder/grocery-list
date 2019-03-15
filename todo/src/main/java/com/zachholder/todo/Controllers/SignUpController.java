@@ -2,7 +2,6 @@ package com.zachholder.todo.Controllers;
 
 
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -33,18 +32,22 @@ public class SignUpController {
     }
 	
 	@RequestMapping(value="signup", method = RequestMethod.POST)
-	public String addUser(Model model, @Valid @ModelAttribute User user, Errors errors) {
+	public String addUser(Model model, @ModelAttribute @Valid User user, Errors errors) {
 		if (errors.hasErrors()) {
-    		model.addAttribute(user);
+			model.addAttribute(user);
         	return "signup/signup";
     	}
+		
+		else if (userDao.findByEmail(user.getEmail()).size() > 0) {
+			model.addAttribute("error", "A user with this email already exists!");
+        	return "signup/signup";
+		}
+
 		else {
 			String hashedPW = encryptePassword(user.getPassword());
 			user.setPassword(hashedPW);
 			userDao.save(user);
 			return "redirect:/";
-		}
-
-		
-		}
+			}
+	}
 }

@@ -17,6 +17,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
     
+    
     @Autowired
     public void configurationGlobal(AuthenticationManagerBuilder authenticationMgr) throws Exception{
     	authenticationMgr.jdbcAuthentication().dataSource(dataSource)
