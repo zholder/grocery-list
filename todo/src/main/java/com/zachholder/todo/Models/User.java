@@ -27,9 +27,7 @@ public class User {
 	@NotNull
     @Size(min=1, max=30)
 	private String email;
-    
-	@NotNull
-    @Size(min=6, max=250, message ="Password must be between 6 and 20 character")
+  
 	private String password;
 
     private boolean enabled;

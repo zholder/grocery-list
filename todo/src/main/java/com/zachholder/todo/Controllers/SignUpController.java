@@ -43,29 +43,45 @@ public class SignUpController {
     }
 	
 	@RequestMapping(value="signup", method = RequestMethod.POST)
-	public String addUser(Model model, @ModelAttribute @Valid User user, Errors errors, HttpServletRequest request) {
-		if (errors.hasErrors()) {
-			model.addAttribute(user);
-        	return "signup/signup";
-    	}
+	public String addUser(Model model, @ModelAttribute @Valid User user, Errors errors, HttpServletRequest request, String verifyPassword) {
+		String loginPW = user.getPassword();
+		String email = user.getEmail();
+		Boolean checkedErrors = false;
 		
-		else if (userDao.findByEmail(user.getEmail()).size() > 0) {
-			model.addAttribute("error", "A user with this email already exists!");
-        	return "signup/signup";
+		
+		if (userDao.findByEmail(user.getEmail()).size() > 0) {
+			model.addAttribute("userError", "A user with this email already exists!");
+			checkedErrors = true;
 		}
 
+		if (! loginPW.equals(verifyPassword)) {
+			model.addAttribute("verifyError", "Passwords must match!");
+			checkedErrors = true;
+		}
+		
+		if (loginPW == null || loginPW.length() < 6 || loginPW.length() > 20 ) {
+			model.addAttribute("passwordError", "Password must be between 6 and 20 characters!");
+			checkedErrors = true;
+		}
+		
+		if (errors.hasErrors()) {
+			checkedErrors = true;
+		}
+		
+		if (checkedErrors) {
+	    	return "signup/signup";
+		}
+		
 		else {
-			String loginPW = user.getPassword();
 			String hashedPW = encryptePassword(user.getPassword());
-			String email = user.getEmail();
 			user.setPassword(hashedPW);
 			userDao.save(user);
 			try {
 				request.login(email,loginPW);
 				} catch(ServletException e) {
 				}
-
 			return "redirect:/";
 			}
+		
 	}
 }
