@@ -1,9 +1,16 @@
 package com.zachholder.todo.Controllers;
 
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -18,7 +25,11 @@ public class SignUpController {
 	
 	@Autowired
 	private UserDao userDao;
-	
+//	
+//    @Autowired
+//    protected AuthenticationManager authenticationManager;
+
+    
 	public static String encryptePassword(String password) {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		String hashedPassword = passwordEncoder.encode(password);
@@ -32,7 +43,7 @@ public class SignUpController {
     }
 	
 	@RequestMapping(value="signup", method = RequestMethod.POST)
-	public String addUser(Model model, @ModelAttribute @Valid User user, Errors errors) {
+	public String addUser(Model model, @ModelAttribute @Valid User user, Errors errors, HttpServletRequest request) {
 		if (errors.hasErrors()) {
 			model.addAttribute(user);
         	return "signup/signup";
@@ -44,9 +55,16 @@ public class SignUpController {
 		}
 
 		else {
+			String loginPW = user.getPassword();
 			String hashedPW = encryptePassword(user.getPassword());
+			String email = user.getEmail();
 			user.setPassword(hashedPW);
 			userDao.save(user);
+			try {
+				request.login(email,loginPW);
+				} catch(ServletException e) {
+				}
+
 			return "redirect:/";
 			}
 	}
