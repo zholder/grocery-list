@@ -41,6 +41,10 @@ public class User {
     @JoinColumn(name = "owner_id")
     private List<UserItem> userItems = new ArrayList<>();
     
+    @OneToMany
+    @JoinColumn(name = "recipe_owner_id")
+    private List<Recipe> recipes = new ArrayList<>();
+    
 	public int getId() {
 		return id;
 	}

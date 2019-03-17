@@ -20,7 +20,7 @@ import com.zachholder.todo.Models.User;
 import com.zachholder.todo.Models.data.AisleDao;
 import com.zachholder.todo.Models.data.GroceryItemDao;
 import com.zachholder.todo.Models.data.GroceryTypeDao;
-import com.zachholder.todo.Models.data.ItemData;
+import com.zachholder.todo.Models.data.RecipeDao;
 import com.zachholder.todo.Models.data.RecipeData;
 import com.zachholder.todo.Models.data.UserDao;
 import com.zachholder.todo.Models.data.UserItemDao;
@@ -44,6 +44,9 @@ public class RecipeController {
 	@Autowired 
 	private UserItemDao userItemDao;
 	
+	@Autowired
+	private RecipeDao recipeDao;
+	
 	private User findCurrentUser() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     	User currentUser = userDao.findByEmail(auth.getName()).get(0);
@@ -53,7 +56,7 @@ public class RecipeController {
     @RequestMapping(value = "")
     public String index(Model model) {  
     	
-    	model.addAttribute("recipes", RecipeData.getRecipes());
+    	model.addAttribute("recipes", recipeDao.findAll());
     	model.addAttribute("title", "My Recipes");
     	model.addAttribute("recipe", new Recipe());
         return "recipe/recipe";
@@ -61,24 +64,29 @@ public class RecipeController {
     
     @RequestMapping(value="", method = RequestMethod.POST)
     public String addRecipe(Model model, @Valid @ModelAttribute Recipe recipe, Errors errors, int[] recipeIds) {
-     	if (errors.hasErrors() || (recipe.getName() == null && recipeIds == null)) {
-    		model.addAttribute("recipes", RecipeData.getRecipes());
+    	
+    	
+    	if (errors.hasErrors() || (recipe.getName() == null && recipeIds == null)) {
+        	model.addAttribute("recipes", recipeDao.findAll());
         	model.addAttribute("title", "My Recipes");
         	return "recipe/recipe";
     	}
     	
     	if (recipeIds != null) {
+    		
 	    	for (int recipeId : recipeIds) {
 	    		Recipe currentRecipe = RecipeData.getById(recipeId);
 	    			for (UserItem recipeItem: currentRecipe.getRecipeItems()) {
-	    				ItemData.add(recipeItem);
+	    				userItemDao.save(recipeItem);
 	    			}
 	    		}
 	    		return "redirect:/";
 	        }
     	
     	if (recipeIds == null && recipe.getName().length() > 0) {
-    		RecipeData.add(recipe);
+        	User currentUser = findCurrentUser();
+    		recipe.setOwner(currentUser);
+    		recipeDao.save(recipe);
         	return "redirect:/recipe/" + recipe.getId();
     	}
     	
@@ -87,7 +95,7 @@ public class RecipeController {
     
     @RequestMapping(value = "", method = RequestMethod.POST, params="recipeId")
     public String deleteRecipe(Model model, @RequestParam int recipeId){
-    	RecipeData.remove(RecipeData.getById(recipeId));
+    	recipeDao.deleteById(recipeId);
     	return "redirect:/recipe";
     }
 
@@ -95,7 +103,7 @@ public class RecipeController {
     @RequestMapping(value = "{recipeId}", method = RequestMethod.GET)
     public String displayRecipeForm(Model model, @PathVariable int recipeId){
 
-    	Recipe recipe = RecipeData.getById(recipeId);
+    	Recipe recipe = recipeDao.findById(recipeId).get();
         model.addAttribute(recipe);
     	model.addAttribute("title", recipe.getName());
     	model.addAttribute("item", new UserItem());
@@ -107,7 +115,7 @@ public class RecipeController {
     	User currentUser = findCurrentUser();
 
     	UserItem recipeItem = new UserItem(item.getName(), currentUser);
-    	Recipe recipe = RecipeData.getById(recipeId);
+    	Recipe recipe = recipeDao.findById(recipeId).get();
     	
     	if (errors.hasErrors() || (item.getName() == null && itemIds == null)){
     		model.addAttribute(recipe);
@@ -133,9 +141,13 @@ public class RecipeController {
     		recipeItem.setType(groceryItemDao.findByName(recipeItem.getName().toLowerCase()).getItemType());
     		recipeItem.setAisle(groceryItemDao.findByName(recipeItem.getName().toLowerCase()).getAisle());
     		}
-    		ItemData.add(recipeItem);
+    		
+    		userItemDao.save(recipeItem);
 	    	recipe.addItem(recipeItem);
+	    	recipeDao.save(recipe);
     	}
+    	recipeDao.save(recipe);
+
     	return "redirect:/recipe/" + recipeId;
     }
     	

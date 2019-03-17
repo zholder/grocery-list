@@ -1,43 +1,52 @@
 package com.zachholder.todo.Models;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.Size;
 
+@Entity
 public class Recipe {
-
+	
+	@Id
+	@GeneratedValue
     private int id;
-    private static int nextId = 1;
 
     @Size(min=2, max=40)
 	private String name;
-	private ArrayList<UserItem> recipeItems = new ArrayList<UserItem> ();
+    
+    @ManyToOne
+    private User owner;
+    
+    @ManyToMany
+	private List<UserItem> items;
 
 	public Recipe() {
-		this.name = null;
-        id = nextId;
-        nextId++;
 	}
 	
-	public Recipe(String name) {
+	public Recipe(String name, User owner) {
 		super();
 		this.name = name;
+		this.owner = owner;
 	}
 
 	public void addItem(UserItem item) {
-		this.recipeItems.add(item);
+		this.items.add(item);
 	}
 	
     public void removeItem(int id) {
         UserItem itemToRemove = getByItemId(id);
-        this.recipeItems.remove(itemToRemove);
+        this.items.remove(itemToRemove);
     }
 	
     public  UserItem getByItemId(int id) {
 
         UserItem theItem = null;
-        for (UserItem candidateItem : recipeItems) {
+        for (UserItem candidateItem : items) {
             if (candidateItem.getId() == id) {
             	theItem = candidateItem;
             }
@@ -61,8 +70,16 @@ public class Recipe {
 		this.id = id;
 	}
 	
+	public User getOwner() {
+		return owner;
+	}
+
+	public void setOwner(User owner) {
+		this.owner = owner;
+	}
+
 	public List<UserItem> getRecipeItems() {
-		return recipeItems;
+		return items;
 	}
 
 	

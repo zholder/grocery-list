@@ -1,8 +1,11 @@
 package com.zachholder.todo.Models;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Size;
 
@@ -25,6 +28,9 @@ public class UserItem {
     @ManyToOne
     private User owner;
     
+    @ManyToMany(mappedBy = "items")
+    private List<Recipe> recipes;
+
 
 	public String getName() {
 		return name;
@@ -69,7 +75,7 @@ public class UserItem {
 	public UserItem(String name, User owner) {
 		this();
 		this.name = name; 
-		this.owner =owner;
+		this.owner = owner;
 	}
 	
 }

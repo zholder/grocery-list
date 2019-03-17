@@ -4,21 +4,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.thymeleaf.expression.Lists;
 
 import com.zachholder.todo.Models.UserItem;
 import com.zachholder.todo.Models.User;
 import com.zachholder.todo.Models.data.AisleDao;
 import com.zachholder.todo.Models.data.GroceryItemDao;
 import com.zachholder.todo.Models.data.GroceryTypeDao;
-import com.zachholder.todo.Models.data.ItemData;
 import com.zachholder.todo.Models.data.UserDao;
 import com.zachholder.todo.Models.data.UserItemDao;
 import com.zachholder.todo.comparators.AisleComparator;
 import com.zachholder.todo.comparators.CompoundComparator;
 import com.zachholder.todo.comparators.NameComparator;
-
-import java.util.List;
 
 import javax.validation.Valid;
 
@@ -71,7 +67,7 @@ public class MainController {
     	User currentUser = findCurrentUser();
 
     	if (errors.hasErrors() || (userItem.getName() == null && itemIds == null)){
-    		model.addAttribute("items", ItemData.getItems());
+    		model.addAttribute("items", userItemDao.findAll());
         	model.addAttribute("title", currentUser.getFirstName() + "'s Grocery List");
         	model.addAttribute("itemTypes", groceryTypeDao.findAll());
     		return "item/index";
@@ -89,7 +85,6 @@ public class MainController {
     			userItem.setType(groceryTypeDao.findById(1).get());
     			userItem.setAisle(aisleDao.findById(1).get());
             	userItem.setOwner(currentUser);
-            	
             	userItemDao.save(userItem);
     		}
     		else {
