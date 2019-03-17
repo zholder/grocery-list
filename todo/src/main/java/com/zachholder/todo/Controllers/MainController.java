@@ -5,11 +5,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.zachholder.todo.Models.Item;
+import com.zachholder.todo.Models.UserItem;
+import com.zachholder.todo.Models.User;
 import com.zachholder.todo.Models.data.AisleDao;
 import com.zachholder.todo.Models.data.GroceryItemDao;
 import com.zachholder.todo.Models.data.GroceryTypeDao;
 import com.zachholder.todo.Models.data.ItemData;
+import com.zachholder.todo.Models.data.UserDao;
+import com.zachholder.todo.Models.data.UserItemDao;
 import com.zachholder.todo.comparators.AisleComparator;
 import com.zachholder.todo.comparators.CompoundComparator;
 import com.zachholder.todo.comparators.NameComparator;
@@ -17,6 +20,8 @@ import com.zachholder.todo.comparators.NameComparator;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -33,26 +38,40 @@ public class MainController {
 	@Autowired
 	private AisleDao aisleDao;
 	
+	@Autowired 
+	private UserDao userDao;
+	
+	@Autowired 
+	private UserItemDao userItemDao;
+	
+	private User findCurrentUser() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    	User currentUser = userDao.findByEmail(auth.getName()).get(0);
+    	return currentUser;
+	}
+	
     @RequestMapping(value = "")
     public String index(Model model) {  
-    	
+    	User currentUser = findCurrentUser();
         CompoundComparator comparator = new CompoundComparator();
         comparator.add(new AisleComparator());
         comparator.add(new NameComparator());
         ItemData.getItems().sort(comparator);
 
     	model.addAttribute("items", ItemData.getItems());
-    	model.addAttribute("title", "My List");
-    	model.addAttribute("item", new Item());
-        return "item/index";
+    	model.addAttribute("title", currentUser.getFirstName() + "'s Grocery List");
+    	model.addAttribute("item", new UserItem());
+
+    	return "item/index";
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public String addItems(Model model, @ModelAttribute @Valid Item item, Errors errors, int[] itemIds) { 
-    	
-    	if (errors.hasErrors() || (item.getName() == null && itemIds == null)){
+    public String addItems(Model model, @ModelAttribute @Valid UserItem userItem, Errors errors, int[] itemIds) { 
+    	User currentUser = findCurrentUser();
+
+    	if (errors.hasErrors() || (userItem.getName() == null && itemIds == null)){
     		model.addAttribute("items", ItemData.getItems());
-        	model.addAttribute("title", "My List");
+        	model.addAttribute("title", currentUser.getFirstName() + "'s Grocery List");
         	model.addAttribute("itemTypes", groceryTypeDao.findAll());
     		return "item/index";
     	}
@@ -63,17 +82,19 @@ public class MainController {
 	        }
     	}
     	
-    	if (itemIds == null && item.getName().length() > 0) {
+    	if (itemIds == null && userItem.getName().length() > 0) {
     		
-    		if (groceryItemDao.findByName(item.getName()) == null ) {
-    			item.setType(groceryTypeDao.findById(1).get());
-    			item.setAisle(aisleDao.findById(1).get());
-            	ItemData.add(item);
+    		if (groceryItemDao.findByName(userItem.getName()) == null ) {
+    			userItem.setType(groceryTypeDao.findById(1).get());
+    			userItem.setAisle(aisleDao.findById(1).get());
+            	userItem.setOwner(currentUser);
+            	ItemData.add(userItem);
     		}
     		else {
-        	item.setType(groceryItemDao.findByName(item.getName().toLowerCase()).getItemType());
-        	item.setAisle(groceryItemDao.findByName(item.getName().toLowerCase()).getAisle());
-        	ItemData.add(item);
+        	userItem.setType(groceryItemDao.findByName(userItem.getName().toLowerCase()).getItemType());
+        	userItem.setAisle(groceryItemDao.findByName(userItem.getName().toLowerCase()).getAisle());
+        	userItem.setOwner(currentUser);
+        	ItemData.add(userItem);
     		}
     	}
     	return "redirect:";
@@ -81,8 +102,9 @@ public class MainController {
     
     @RequestMapping(value = "edit/{itemId}", method = RequestMethod.GET)
     public String displayEditForm(Model model, @PathVariable int itemId){
+    	User currentUser = findCurrentUser();
 
-        Item item = ItemData.getById(itemId);
+        UserItem item = ItemData.getById(itemId);
         model.addAttribute(item);
         model.addAttribute("itemTypes", groceryTypeDao.findAll());
         model.addAttribute("aisles", aisleDao.findAll());
@@ -90,7 +112,8 @@ public class MainController {
     }
 
     @RequestMapping(value = "edit/{itemId}", method = RequestMethod.POST)
-    public String processEditForm(@ModelAttribute @Valid Item item, Errors errors, @PathVariable int itemId, Model model){
+    public String processEditForm(@ModelAttribute @Valid UserItem item, Errors errors, @PathVariable int itemId, Model model){
+    	User currentUser = findCurrentUser();
 
     	if (errors.hasErrors()){
     		model.addAttribute(item);
@@ -99,7 +122,7 @@ public class MainController {
             return "item/item";
        }
     	
-    	Item editedItem = ItemData.getById(itemId);
+    	UserItem editedItem = ItemData.getById(itemId);
         editedItem.setName(item.getName());
         editedItem.setType(item.getType());
     	editedItem.setAisle(item.getAisle());

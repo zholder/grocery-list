@@ -3,6 +3,8 @@ package com.zachholder.todo.Controllers;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -12,13 +14,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.zachholder.todo.Models.Item;
+import com.zachholder.todo.Models.UserItem;
 import com.zachholder.todo.Models.Recipe;
+import com.zachholder.todo.Models.User;
 import com.zachholder.todo.Models.data.AisleDao;
 import com.zachholder.todo.Models.data.GroceryItemDao;
 import com.zachholder.todo.Models.data.GroceryTypeDao;
 import com.zachholder.todo.Models.data.ItemData;
 import com.zachholder.todo.Models.data.RecipeData;
+import com.zachholder.todo.Models.data.UserDao;
+import com.zachholder.todo.Models.data.UserItemDao;
 
 @Controller
 @RequestMapping(value = "recipe")
@@ -33,6 +38,18 @@ public class RecipeController {
 	@Autowired
 	private AisleDao aisleDao;
 	
+	@Autowired 
+	private UserDao userDao;
+	
+	@Autowired 
+	private UserItemDao userItemDao;
+	
+	private User findCurrentUser() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    	User currentUser = userDao.findByEmail(auth.getName()).get(0);
+    	return currentUser;
+	}
+
     @RequestMapping(value = "")
     public String index(Model model) {  
     	
@@ -53,7 +70,7 @@ public class RecipeController {
     	if (recipeIds != null) {
 	    	for (int recipeId : recipeIds) {
 	    		Recipe currentRecipe = RecipeData.getById(recipeId);
-	    			for (Item recipeItem: currentRecipe.getRecipeItems()) {
+	    			for (UserItem recipeItem: currentRecipe.getRecipeItems()) {
 	    				ItemData.add(recipeItem);
 	    			}
 	    		}
@@ -81,13 +98,15 @@ public class RecipeController {
     	Recipe recipe = RecipeData.getById(recipeId);
         model.addAttribute(recipe);
     	model.addAttribute("title", recipe.getName());
-    	model.addAttribute("item", new Item());
+    	model.addAttribute("item", new UserItem());
         return "recipe/recipeitems";
     }
     
     @RequestMapping(value = "{recipeId}", method = RequestMethod.POST)
-    public String addRecipeItems(Model model, @Valid @ModelAttribute Item item, Errors errors, @PathVariable int recipeId, int[] itemIds) { 
-    	Item recipeItem = new Item(item.getName());
+    public String addRecipeItems(Model model, @Valid @ModelAttribute UserItem item, Errors errors, @PathVariable int recipeId, int[] itemIds) { 
+    	User currentUser = findCurrentUser();
+
+    	UserItem recipeItem = new UserItem(item.getName(), currentUser);
     	Recipe recipe = RecipeData.getById(recipeId);
     	
     	if (errors.hasErrors() || (item.getName() == null && itemIds == null)){

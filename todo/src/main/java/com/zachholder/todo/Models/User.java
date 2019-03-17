@@ -1,9 +1,14 @@
 package com.zachholder.todo.Models;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -32,6 +37,10 @@ public class User {
 
     private boolean enabled;
 
+    @OneToMany
+    @JoinColumn(name = "owner_id")
+    private List<UserItem> userItems = new ArrayList<>();
+    
 	public int getId() {
 		return id;
 	}

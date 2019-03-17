@@ -2,30 +2,30 @@ package com.zachholder.todo.Models.data;
 
 import java.util.ArrayList;
 
-import com.zachholder.todo.Models.Item;
+import com.zachholder.todo.Models.UserItem;
 
 public class ItemData {
-    static ArrayList<Item> items = new ArrayList<>();
+    static ArrayList<UserItem> items = new ArrayList<>();
 
-	public static ArrayList<Item> getItems() {
+	public static ArrayList<UserItem> getItems() {
 		return items;
 	}
 
-	public static void add(Item item) {
+	public static void add(UserItem item) {
 		items.add(item);
 	}
 
     public static void remove(int id) {
-        Item itemToRemove = getById(id);
+        UserItem itemToRemove = getById(id);
         items.remove(itemToRemove);
     }
 
     // getById
-    public static Item getById(int id) {
+    public static UserItem getById(int id) {
 
-        Item theItem = null;
+        UserItem theItem = null;
 
-        for (Item candidateItem : items) {
+        for (UserItem candidateItem : items) {
             if (candidateItem.getId() == id) {
             	theItem = candidateItem;
             }

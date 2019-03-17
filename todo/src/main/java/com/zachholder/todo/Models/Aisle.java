@@ -38,7 +38,6 @@ public class Aisle {
 		return position;
 	}
 
-
 	public Aisle() {
 	}
     

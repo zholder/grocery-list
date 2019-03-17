@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import com.zachholder.todo.Models.Item;
+import com.zachholder.todo.Models.UserItem;
 
-public class CompoundComparator implements Comparator<Item> {
+public class CompoundComparator implements Comparator<UserItem> {
 
-    private List<Comparator<Item>> comparators = new ArrayList<>();
+    private List<Comparator<UserItem>> comparators = new ArrayList<>();
 
-    public void add(Comparator<Item> item){
+    public void add(Comparator<UserItem> item){
         comparators.add(item);
     }
 
-    public int compare(Item o1, Item o2){
+    public int compare(UserItem o1, UserItem o2){
         String currentItem = o1.getAisle().getName();
         while (o2.getAisle().getName().equals(currentItem)){
             return o1.getName().compareTo(o2.getName());

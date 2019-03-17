@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.zachholder.todo.Models.Item;
+import com.zachholder.todo.Models.UserItem;
 import com.zachholder.todo.Models.data.ItemData;
 import com.zachholder.todo.comparators.AisleComparator;
 import com.zachholder.todo.comparators.CompoundComparator;

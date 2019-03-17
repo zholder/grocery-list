@@ -2,12 +2,12 @@ package com.zachholder.todo.comparators;
 
 import java.util.Comparator;
 
-import com.zachholder.todo.Models.Item;
+import com.zachholder.todo.Models.UserItem;
 
-public class AisleComparator implements Comparator<Item> {
+public class AisleComparator implements Comparator<UserItem> {
 
     @Override
-    public int compare(Item o1, Item o2) {
+    public int compare(UserItem o1, UserItem o2) {
         return o2.getAisle().getPosition() - o1.getAisle().getPosition();
     }
 }

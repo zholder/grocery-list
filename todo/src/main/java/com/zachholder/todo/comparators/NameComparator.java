@@ -2,12 +2,12 @@ package com.zachholder.todo.comparators;
 
 import java.util.Comparator;
 
-import com.zachholder.todo.Models.Item;
+import com.zachholder.todo.Models.UserItem;
 
-public class NameComparator implements Comparator<Item> {
+public class NameComparator implements Comparator<UserItem> {
 		
 		@Override
-	    public int compare(Item o1, Item o2) {
+	    public int compare(UserItem o1, UserItem o2) {
 	        return o1.getName().compareTo(o2.getName());
 	    }
 }
