@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body class="container">
+
+<nav th:replace="fragments :: navigation"></nav>
+
+<h1 th:text="${title}">Grocery List</h1>
+
+        <form th:object="${user}" method="post">
+        
+            <div>
+            	<label> First Name : <input type="text" name="firstName" th:value="${user.firstName}"/> </label>
+            	<span th:errors="${user.firstName}" class="error"></span>
+            	
+            </div>
+            <div>
+            	<label> Last Name : <input type="text" name="lastName" th:value="${user.lastName}"/> </label>
+            	<span th:errors="${user.lastName}" class="error"></span>
+            </div>
+            <div>
+            	<label> Email: <input type="email" name="email" th:value="${user.email}"/> </label>
+            	<span th:errors="${user.email}" class="error"></span>
+            	<span th:text="${userError}" class="error"></span>
+           	</div>
+            <div>
+            	<label> Password: <input type="password" name="password"/> </label>
+            	<span th:errors="${user.password}" class="error"></span>
+            	<span th:text="${passwordError}" class="error"></span>
+            </div>
+            <div>
+            	<label> Confirm Password: <input type="password" name="verifyPassword"/> </label>
+            	<span th:text="${verifyError}" class="error"></span>
+            </div>
+            
+            <div><input type="submit" value="Register"/></div>
+        </form>
+
+	</body>
+</html>
+                

@@ -6,8 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class Todo {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Throwable {
 		SpringApplication.run(Todo.class, args);
 	}
 }
-

@@ -13,7 +13,7 @@ import javax.persistence.OneToMany;
 public class ItemType {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue
 	private int id;
 	
 	private String name;

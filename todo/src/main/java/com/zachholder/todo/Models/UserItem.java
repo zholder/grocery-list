@@ -1,19 +1,37 @@
 package com.zachholder.todo.Models;
 
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.Size;
 
-public class Item {
+@Entity
+public class UserItem {
 	
+	@Id
+	@GeneratedValue
     private int id;
-    private static int nextId = 1;
 
     @Size(min=2, max=20)
 	private String name;
 
+    @ManyToOne
     private ItemType type;
     
+    @ManyToOne
     private Aisle aisle;
     
+    @ManyToOne
+    private User owner;
+    
+    @ManyToMany(mappedBy = "items")
+    private List<Recipe> recipes;
+
+
 	public String getName() {
 		return name;
 	}
@@ -42,15 +60,22 @@ public class Item {
 		this.aisle = aisle;
 	}
 
-	public Item() {
-		this.name = null;
-        id = nextId;
-        nextId++;
+	
+	public User getOwner() {
+		return owner;
+	}
+
+	public void setOwner(User owner) {
+		this.owner = owner;
+	}
+
+	public UserItem() {
 	}
 	
-	public Item(String name) {
+	public UserItem(String name, User owner) {
 		this();
 		this.name = name; 
+		this.owner = owner;
 	}
 	
 }
