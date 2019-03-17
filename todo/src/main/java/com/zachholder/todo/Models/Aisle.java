@@ -14,7 +14,7 @@ import javax.persistence.OneToMany;
 @Entity
 public class Aisle {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue
 	private int id;
 	
 	private String name;

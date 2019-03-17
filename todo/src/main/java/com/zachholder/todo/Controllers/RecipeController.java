@@ -21,7 +21,6 @@ import com.zachholder.todo.Models.data.AisleDao;
 import com.zachholder.todo.Models.data.GroceryItemDao;
 import com.zachholder.todo.Models.data.GroceryTypeDao;
 import com.zachholder.todo.Models.data.RecipeDao;
-import com.zachholder.todo.Models.data.RecipeData;
 import com.zachholder.todo.Models.data.UserDao;
 import com.zachholder.todo.Models.data.UserItemDao;
 
@@ -55,27 +54,29 @@ public class RecipeController {
 
     @RequestMapping(value = "")
     public String index(Model model) {  
-    	
+    	User currentUser = findCurrentUser();
+
     	model.addAttribute("recipes", recipeDao.findAll());
-    	model.addAttribute("title", "My Recipes");
+    	model.addAttribute("title", currentUser.getFirstName() + "'s Recipes");
     	model.addAttribute("recipe", new Recipe());
         return "recipe/recipe";
     }
     
     @RequestMapping(value="", method = RequestMethod.POST)
     public String addRecipe(Model model, @Valid @ModelAttribute Recipe recipe, Errors errors, int[] recipeIds) {
-    	
+    	User currentUser = findCurrentUser();
+
     	
     	if (errors.hasErrors() || (recipe.getName() == null && recipeIds == null)) {
         	model.addAttribute("recipes", recipeDao.findAll());
-        	model.addAttribute("title", "My Recipes");
+        	model.addAttribute("title", currentUser.getFirstName() + "'s Recipes");
         	return "recipe/recipe";
     	}
     	
     	if (recipeIds != null) {
     		
 	    	for (int recipeId : recipeIds) {
-	    		Recipe currentRecipe = RecipeData.getById(recipeId);
+	    		Recipe currentRecipe = recipeDao.findById(recipeId).get();
 	    			for (UserItem recipeItem: currentRecipe.getRecipeItems()) {
 	    				userItemDao.save(recipeItem);
 	    			}
@@ -84,7 +85,6 @@ public class RecipeController {
 	        }
     	
     	if (recipeIds == null && recipe.getName().length() > 0) {
-        	User currentUser = findCurrentUser();
     		recipe.setOwner(currentUser);
     		recipeDao.save(recipe);
         	return "redirect:/recipe/" + recipe.getId();
@@ -127,6 +127,8 @@ public class RecipeController {
     	if (itemIds != null) {
 	    	for (int itemId : itemIds) {
 	    		recipe.removeItem(itemId);
+		    	recipeDao.save(recipe);
+
 	        }
     	}
     	
@@ -146,8 +148,8 @@ public class RecipeController {
 	    	recipe.addItem(recipeItem);
 	    	recipeDao.save(recipe);
     	}
-    	recipeDao.save(recipe);
-
+    	
+    	
     	return "redirect:/recipe/" + recipeId;
     }
     	

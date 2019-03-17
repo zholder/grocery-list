@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 public class GroceryItem {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue
     private int id;
 	
     @Size(min=2, max=20)
