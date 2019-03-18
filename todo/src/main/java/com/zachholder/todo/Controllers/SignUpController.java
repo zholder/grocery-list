@@ -33,6 +33,7 @@ public class SignUpController {
 	
 	@RequestMapping(value="signup")
     public String showSignUp(Model model) {  
+    	model.addAttribute("title", "Sign Up for Grocery List");
     	model.addAttribute("user", new User());
         return "signup/signup";
     }
@@ -63,6 +64,7 @@ public class SignUpController {
 		}
 		
 		if (checkedErrors) {
+	    	model.addAttribute("title", "Sign Up for Grocery List");
 	    	return "signup/signup";
 		}
 		

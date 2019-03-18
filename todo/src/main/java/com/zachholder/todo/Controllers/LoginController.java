@@ -1,6 +1,7 @@
 package com.zachholder.todo.Controllers;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
@@ -10,8 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class LoginController {
 	
 	@RequestMapping(value="")
-    public String login() {  
-    	
+    public String login(Model model) {  
+    	model.addAttribute("title", "Login to Grocery List");
+
         return "login/login";
     }
 

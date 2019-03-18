@@ -56,7 +56,7 @@ public class RecipeController {
     public String index(Model model) {  
     	User currentUser = findCurrentUser();
 
-    	model.addAttribute("recipes", recipeDao.findAll());
+    	model.addAttribute("recipes", recipeDao.findAllByOwner(currentUser));
     	model.addAttribute("title", currentUser.getFirstName() + "'s Recipes");
     	model.addAttribute("recipe", new Recipe());
         return "recipe/recipe";
@@ -68,7 +68,7 @@ public class RecipeController {
 
     	
     	if (errors.hasErrors() || (recipe.getName() == null && recipeIds == null)) {
-        	model.addAttribute("recipes", recipeDao.findAll());
+        	model.addAttribute("recipes", recipeDao.findAllByOwner(currentUser));
         	model.addAttribute("title", currentUser.getFirstName() + "'s Recipes");
         	return "recipe/recipe";
     	}

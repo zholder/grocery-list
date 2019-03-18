@@ -55,7 +55,7 @@ public class MainController {
         CompoundComparator comparator = new CompoundComparator();
         comparator.add(new AisleComparator());
         comparator.add(new NameComparator());
-    	model.addAttribute("items", userItemDao.findAll());
+    	model.addAttribute("items", userItemDao.findAllByOwner(currentUser));
     	model.addAttribute("title", currentUser.getFirstName() + "'s Grocery List");
     	model.addAttribute("item", new UserItem());
 
@@ -67,7 +67,7 @@ public class MainController {
     	User currentUser = findCurrentUser();
 
     	if (errors.hasErrors() || (userItem.getName() == null && itemIds == null)){
-    		model.addAttribute("items", userItemDao.findAll());
+    		model.addAttribute("items", userItemDao.findAllByOwner(currentUser));
         	model.addAttribute("title", currentUser.getFirstName() + "'s Grocery List");
         	model.addAttribute("itemTypes", groceryTypeDao.findAll());
     		return "item/index";
@@ -101,6 +101,7 @@ public class MainController {
     public String displayEditForm(Model model, @PathVariable int itemId){
 
         UserItem item = userItemDao.findById(itemId).get();
+    	model.addAttribute("title", "Edit " + item.getName());
         model.addAttribute("item", item);
         model.addAttribute("itemTypes", groceryTypeDao.findAll());
         model.addAttribute("aisles", aisleDao.findAll());
@@ -111,6 +112,7 @@ public class MainController {
     public String processEditForm(@ModelAttribute @Valid UserItem item, Errors errors, @PathVariable int itemId, Model model){
 
     	if (errors.hasErrors()){
+        	model.addAttribute("title", "Edit " + item.getName());
     		model.addAttribute(item);
             model.addAttribute("itemTypes", groceryTypeDao.findAll());
             model.addAttribute("aisles", aisleDao.findAll());
