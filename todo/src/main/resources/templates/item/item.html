@@ -7,8 +7,8 @@
 
 <h1 th:text="${title}">Default Title</h1>
 
-<form method="post" style="max-width:600px" th:object="${item}">
-<input type="hidden" th:value="${item.id}" name="itemId" />
+<form method="post" style="max-width:600px" th:object="${userItem}">
+<input type="hidden" th:value="${userItem.id}" name="itemId" />
 
     <div class="form-group">
         <label th:for="name">Name</label>

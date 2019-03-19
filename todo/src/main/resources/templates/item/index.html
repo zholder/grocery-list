@@ -7,11 +7,11 @@
 
 <h1 th:text="${title}">Default Title</h1>
 
-        <form method="post" style="max-width:600px;" th:object="${item}">
+        <form method="post" style="max-width:600px;" th:object="${userItem}">
 		    <div class="form-group">
 		        <label th:for="name"></label>
 		        <input class="form-control" th:field="*{name}" />
-		        <span th:errors="${item.name}" class="error"></span>
+		        <span th:errors="${userItem.name}" class="error"></span>
 		    </div>
 
 		  	<input type="submit" value="Add Item" />

@@ -57,21 +57,22 @@ public class MainController {
         comparator.add(new NameComparator());
     	model.addAttribute("items", userItemDao.findAllByOwner(currentUser));
     	model.addAttribute("title", currentUser.getFirstName() + "'s Grocery List");
-    	model.addAttribute("item", new UserItem());
+    	model.addAttribute("userItem", new UserItem());
 
     	return "item/index";
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public String addItems(Model model, @ModelAttribute @Valid UserItem userItem, Errors errors, int[] itemIds) { 
+    public String addItems(Model model, @ModelAttribute @Valid UserItem item, Errors errors, int[] itemIds) { 
     	User currentUser = findCurrentUser();
 
-    	if (errors.hasErrors() || (userItem.getName() == null && itemIds == null)){
+    	if (errors.hasErrors() || (item.getName() == null && itemIds == null)){
+    		System.out.println("error");
     		model.addAttribute("items", userItemDao.findAllByOwner(currentUser));
         	model.addAttribute("title", currentUser.getFirstName() + "'s Grocery List");
-        	model.addAttribute("itemTypes", groceryTypeDao.findAll());
     		return "item/index";
     	}
+    	
     	
     	if (itemIds != null) {
 	    	for (int itemId : itemIds) {
@@ -79,19 +80,19 @@ public class MainController {
 	        }
     	}
     	
-    	if (itemIds == null && userItem.getName().length() > 0) {
+    	if (itemIds == null && item.getName().length() > 0) {
     		
-    		if (groceryItemDao.findByName(userItem.getName()) == null ) {
-    			userItem.setType(groceryTypeDao.findById(1).get());
-    			userItem.setAisle(aisleDao.findById(1).get());
-            	userItem.setOwner(currentUser);
-            	userItemDao.save(userItem);
+    		if (groceryItemDao.findByName(item.getName()) == null ) {
+    			item.setType(groceryTypeDao.findById(1).get());
+    			item.setAisle(aisleDao.findById(1).get());
+            	item.setOwner(currentUser);
+            	userItemDao.save(item);
     		}
     		else {
-        	userItem.setType(groceryItemDao.findByName(userItem.getName().toLowerCase()).getItemType());
-        	userItem.setAisle(groceryItemDao.findByName(userItem.getName().toLowerCase()).getAisle());
-        	userItem.setOwner(currentUser);
-        	userItemDao.save(userItem);
+        	item.setType(groceryItemDao.findByName(item.getName().toLowerCase()).getItemType());
+        	item.setAisle(groceryItemDao.findByName(item.getName().toLowerCase()).getAisle());
+        	item.setOwner(currentUser);
+        	userItemDao.save(item);
     		}
     	}
     	return "redirect:";
@@ -100,29 +101,29 @@ public class MainController {
     @RequestMapping(value = "edit/{itemId}", method = RequestMethod.GET)
     public String displayEditForm(Model model, @PathVariable int itemId){
 
-        UserItem item = userItemDao.findById(itemId).get();
-    	model.addAttribute("title", "Edit " + item.getName());
-        model.addAttribute("item", item);
+        UserItem userItem = userItemDao.findById(itemId).get();
+    	model.addAttribute("title", "Edit " + userItem.getName());
+        model.addAttribute(userItem);
         model.addAttribute("itemTypes", groceryTypeDao.findAll());
         model.addAttribute("aisles", aisleDao.findAll());
         return  "item/item";
     }
 
     @RequestMapping(value = "edit/{itemId}", method = RequestMethod.POST)
-    public String processEditForm(@ModelAttribute @Valid UserItem item, Errors errors, @PathVariable int itemId, Model model){
+    public String processEditForm(@ModelAttribute @Valid UserItem userItem, Errors errors, @PathVariable int itemId, Model model){
 
     	if (errors.hasErrors()){
-        	model.addAttribute("title", "Edit " + item.getName());
-    		model.addAttribute(item);
+        	model.addAttribute("title", "Edit " + userItem.getName());
+    		model.addAttribute(userItem);
             model.addAttribute("itemTypes", groceryTypeDao.findAll());
             model.addAttribute("aisles", aisleDao.findAll());
             return "item/item";
        }
     	
     	UserItem editedItem = userItemDao.findById(itemId).get();
-        editedItem.setName(item.getName());
-        editedItem.setType(item.getType());
-    	editedItem.setAisle(item.getAisle());
+        editedItem.setName(userItem.getName());
+        editedItem.setType(userItem.getType());
+    	editedItem.setAisle(userItem.getAisle());
     	userItemDao.save(editedItem);
         return "redirect:/";
     }
