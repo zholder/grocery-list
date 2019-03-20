@@ -13,4 +13,5 @@ import com.zachholder.todo.Models.User;
 public interface UserDao extends CrudRepository<User, Integer>{
 
 	public List<User> findByEmail(String email);
+	
 }

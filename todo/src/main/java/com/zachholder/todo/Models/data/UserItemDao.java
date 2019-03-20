@@ -15,6 +15,6 @@ import com.zachholder.todo.Models.UserItem;
 @Transactional
 public interface UserItemDao extends CrudRepository<UserItem, Integer>{
 
-	public List<UserItem> findAllByOwner(User owner);
+	public List<UserItem> findAllByOwnerOrderByAisleAscNameAsc(User owner);
 
 }

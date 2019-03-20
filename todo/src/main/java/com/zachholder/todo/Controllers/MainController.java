@@ -12,9 +12,6 @@ import com.zachholder.todo.Models.data.GroceryItemDao;
 import com.zachholder.todo.Models.data.GroceryTypeDao;
 import com.zachholder.todo.Models.data.UserDao;
 import com.zachholder.todo.Models.data.UserItemDao;
-import com.zachholder.todo.comparators.AisleComparator;
-import com.zachholder.todo.comparators.CompoundComparator;
-import com.zachholder.todo.comparators.NameComparator;
 
 import javax.validation.Valid;
 
@@ -52,10 +49,7 @@ public class MainController {
     @RequestMapping(value = "")
     public String index(Model model) {  
     	User currentUser = findCurrentUser();
-        CompoundComparator comparator = new CompoundComparator();
-        comparator.add(new AisleComparator());
-        comparator.add(new NameComparator());
-    	model.addAttribute("items", userItemDao.findAllByOwner(currentUser));
+    	model.addAttribute("items", userItemDao.findAllByOwnerOrderByAisleAscNameAsc(currentUser));
     	model.addAttribute("title", currentUser.getFirstName() + "'s Grocery List");
     	model.addAttribute("userItem", new UserItem());
 
@@ -68,7 +62,7 @@ public class MainController {
 
     	if (errors.hasErrors() || (item.getName() == null && itemIds == null)){
     		System.out.println("error");
-    		model.addAttribute("items", userItemDao.findAllByOwner(currentUser));
+    		model.addAttribute("items", userItemDao.findAllByOwnerOrderByAisleAscNameAsc(currentUser));
         	model.addAttribute("title", currentUser.getFirstName() + "'s Grocery List");
     		return "item/index";
     	}

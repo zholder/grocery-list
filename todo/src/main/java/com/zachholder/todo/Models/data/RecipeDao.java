@@ -14,5 +14,7 @@ import com.zachholder.todo.Models.UserItem;
 @Repository
 @Transactional
 public interface RecipeDao  extends CrudRepository <Recipe, Integer>{
+	
 	public List<Recipe> findAllByOwner(User owner);
+	
 }

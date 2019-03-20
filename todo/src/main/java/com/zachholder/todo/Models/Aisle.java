@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 @Entity
 public class Aisle {
@@ -24,7 +25,6 @@ public class Aisle {
 	
     @OneToMany
     @JoinColumn(name = "aisle_id")
-    private List<GroceryItem> groceryItems = new ArrayList<>();
 
 	public int getId() {
 		return id;
