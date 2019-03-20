@@ -78,6 +78,7 @@ public class RecipeController {
 	    	for (int recipeId : recipeIds) {
 	    		Recipe currentRecipe = recipeDao.findById(recipeId).get();
 	    			for (UserItem recipeItem: currentRecipe.getRecipeItems()) {
+	    				recipeItem.setOnList(true);
 	    				userItemDao.save(recipeItem);
 	    			}
 	    		}
@@ -126,9 +127,15 @@ public class RecipeController {
     	
     	if (itemIds != null) {
 	    	for (int itemId : itemIds) {
-	    		recipe.removeItem(itemId);
+	    		UserItem theItem = userItemDao.findById(itemId).get();
+	    		if (! theItem.isOnList()) {
+	    			userItemDao.deleteById(itemId);
+	    		} else {
+		    		recipe.removeItem(itemId);
+		    		theItem.setOnRecipe(false);
+		    		// keeps on the user list
+	    		}
 		    	recipeDao.save(recipe);
-
 	        }
     	}
     	
@@ -143,7 +150,8 @@ public class RecipeController {
     		recipeItem.setType(groceryItemDao.findByName(recipeItem.getName().toLowerCase()).getItemType());
     		recipeItem.setAisle(groceryItemDao.findByName(recipeItem.getName().toLowerCase()).getAisle());
     		}
-    		
+    		recipeItem.setOnRecipe(true);
+    		recipeItem.setOnList(false);
     		userItemDao.save(recipeItem);
 	    	recipe.addItem(recipeItem);
 	    	recipeDao.save(recipe);

@@ -33,7 +33,10 @@ public class UserItem {
     @ManyToMany(mappedBy = "items")
     private List<Recipe> recipes;
 
-
+    private boolean onList;
+    
+    private boolean onRecipe;
+    
 	public String getName() {
 		return name;
 	}
@@ -70,6 +73,22 @@ public class UserItem {
 		this.owner = owner;
 	}
 
+	public boolean isOnList() {
+		return onList;
+	}
+
+	public void setOnList(boolean onList) {
+		this.onList = onList;
+	}
+
+	public boolean isOnRecipe() {
+		return onRecipe;
+	}
+
+	public void setOnRecipe(boolean onRecipe) {
+		this.onRecipe = onRecipe;
+	}
+
 	public UserItem() {
 	}
 	
@@ -77,6 +96,8 @@ public class UserItem {
 		this();
 		this.name = name; 
 		this.owner = owner;
+		this.onList = true;
+		this.onRecipe = false;
 	}
 	
 }
