@@ -93,6 +93,7 @@ public class RecipeController {
 	    		return "redirect:/";
 	        }
     	
+    	
     	if (recipeIds == null && recipe.getName().length() > 0) {
     		recipe.setOwner(currentUser);
     		recipeDao.save(recipe);

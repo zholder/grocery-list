@@ -49,7 +49,7 @@ public class MainController {
     @RequestMapping(value = "")
     public String index(Model model) {  
     	User currentUser = findCurrentUser();
-    	model.addAttribute("items", userItemDao.findAllByOwnerOrderByAisleAscNameAsc(currentUser));
+    	model.addAttribute("items", userItemDao.findAllByOwnerAndOnListOrderByAisleAscNameAsc(currentUser, true));
     	model.addAttribute("title", currentUser.getFirstName() + "'s Grocery List");
     	model.addAttribute("userItem", new UserItem());
 
@@ -62,7 +62,7 @@ public class MainController {
 
     	if (errors.hasErrors() || (item.getName() == null && itemIds == null)){
     		System.out.println("error");
-    		model.addAttribute("items", userItemDao.findAllByOwnerOrderByAisleAscNameAsc(currentUser));
+        	model.addAttribute("items", userItemDao.findAllByOwnerAndOnListOrderByAisleAscNameAsc(currentUser, true));
         	model.addAttribute("title", currentUser.getFirstName() + "'s Grocery List");
     		return "item/index";
     	}
@@ -70,22 +70,27 @@ public class MainController {
     	
     	if (itemIds != null) {
 	    	for (int itemId : itemIds) {
-	    		userItemDao.deleteById(itemId);
+	    		UserItem currentUserItem = userItemDao.findById(itemId).get();
+	    		if (currentUserItem.isOnRecipe()) {
+	    			currentUserItem.setOnList(false);
+	    			userItemDao.save(currentUserItem);
+	    		} else {
+		    		userItemDao.deleteById(itemId);
+	    		}
 	        }
     	}
     	
     	if (itemIds == null && item.getName().length() > 0) {
-    		
+    		item.setOwner(currentUser);
+    		item.setOnList(true);
     		if (groceryItemDao.findByName(item.getName()) == null ) {
     			item.setType(groceryTypeDao.findById(1).get());
     			item.setAisle(aisleDao.findById(1).get());
-            	item.setOwner(currentUser);
             	userItemDao.save(item);
     		}
     		else {
         	item.setType(groceryItemDao.findByName(item.getName().toLowerCase()).getItemType());
         	item.setAisle(groceryItemDao.findByName(item.getName().toLowerCase()).getAisle());
-        	item.setOwner(currentUser);
         	userItemDao.save(item);
     		}
     	}
