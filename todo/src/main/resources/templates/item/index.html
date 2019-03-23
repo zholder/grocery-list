@@ -34,6 +34,12 @@
 				
 			<td th:if="${item.aisle}" th:text="${item.aisle.name}">
 			</td>
+			
+			<td>
+				<label th:for="${item.id}">
+					<button type="submit" name="itemId" th:value="${item.id}" class="fas fa-trash-alt"></button>
+				</label>
+			</td>
 		    </tr>
 		</table>
 						

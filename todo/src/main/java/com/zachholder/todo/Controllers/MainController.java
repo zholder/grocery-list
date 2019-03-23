@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.zachholder.todo.Models.UserItem;
 import com.zachholder.todo.Models.User;
@@ -121,6 +122,19 @@ public class MainController {
     	
     	return "redirect:"; 	
     }
+    
+    @RequestMapping(value = "", method = RequestMethod.POST, params="itemId")
+    public String deleteIdm(Model model, @RequestParam int itemId){
+    	UserItem currentUserItem = userItemDao.findById(itemId).get();
+		if (currentUserItem.isOnRecipe()) {
+			currentUserItem.setOnList(false);
+			userItemDao.save(currentUserItem);
+		} else {
+    		userItemDao.deleteById(itemId);
+		}
+    	return "redirect:/";
+    }
+
     
     @RequestMapping(value = "edit/{itemId}", method = RequestMethod.GET)
     public String displayEditForm(Model model, @PathVariable int itemId){
