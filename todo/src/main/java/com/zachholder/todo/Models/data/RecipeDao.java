@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import com.zachholder.todo.Models.Recipe;
 import com.zachholder.todo.Models.User;
-import com.zachholder.todo.Models.UserItem;
 
 @Repository
 @Transactional

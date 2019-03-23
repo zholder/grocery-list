@@ -9,7 +9,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Size;
 
-import org.hibernate.annotations.OrderBy;
 
 @Entity
 public class UserItem {

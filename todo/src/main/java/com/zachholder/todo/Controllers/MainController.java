@@ -46,6 +46,13 @@ public class MainController {
     	return currentUser;
 	}
 	
+	private String cleanUpSearch(String searchTerm) {
+		if (searchTerm != null && searchTerm.length() > 0 && searchTerm.toLowerCase().charAt(searchTerm.length() - 1) == 's') {
+			searchTerm = searchTerm.substring(0, searchTerm.length() - 1);
+	    }
+		return searchTerm;
+	}
+	
     @RequestMapping(value = "")
     public String index(Model model) {  
     	User currentUser = findCurrentUser();
@@ -94,7 +101,25 @@ public class MainController {
         	userItemDao.save(item);
     		}
     	}
-    	return "redirect:";
+    	
+    	if (itemIds == null && item.getName().length() > 0) {
+    		item.setOwner(currentUser);
+    		item.setOnList(true);
+        	String searchTerm = cleanUpSearch(item.getName()).toLowerCase();
+
+    		if (groceryItemDao.findByName(searchTerm) == null ) {
+    		item.setType(groceryTypeDao.findById(1).get());
+    		item.setAisle(aisleDao.findById(1).get());
+    		}
+    	
+    		else {
+    		item.setType(groceryItemDao.findByName(searchTerm).getItemType());
+    		item.setAisle(groceryItemDao.findByName(searchTerm).getAisle());
+    		}
+    		userItemDao.save(item);
+    	}
+    	
+    	return "redirect:"; 	
     }
     
     @RequestMapping(value = "edit/{itemId}", method = RequestMethod.GET)
