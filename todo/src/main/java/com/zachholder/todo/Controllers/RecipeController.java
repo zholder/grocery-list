@@ -51,6 +51,14 @@ public class RecipeController {
     	User currentUser = userDao.findByEmail(auth.getName()).get(0);
     	return currentUser;
 	}
+	
+	private String cleanUpSearch(String searchTerm) {
+		if (searchTerm != null && searchTerm.length() > 0 && searchTerm.toLowerCase().charAt(searchTerm.length() - 1) == 's') {
+			searchTerm = searchTerm.substring(0, searchTerm.length() - 1);
+	    }
+		return searchTerm;
+	}
+	
 
     @RequestMapping(value = "")
     public String index(Model model) {  
@@ -141,14 +149,16 @@ public class RecipeController {
     	
     	if (itemIds == null && recipeItem.getName().length() > 0) {
     		
-    		if (groceryItemDao.findByName(recipeItem.getName()) == null ) {
+        	String searchTerm = cleanUpSearch(recipeItem.getName()).toLowerCase();
+
+    		if (groceryItemDao.findByName(searchTerm) == null ) {
     		recipeItem.setType(groceryTypeDao.findById(1).get());
     		recipeItem.setAisle(aisleDao.findById(1).get());
     		}
     	
     		else {
-    		recipeItem.setType(groceryItemDao.findByName(recipeItem.getName().toLowerCase()).getItemType());
-    		recipeItem.setAisle(groceryItemDao.findByName(recipeItem.getName().toLowerCase()).getAisle());
+    		recipeItem.setType(groceryItemDao.findByName(searchTerm).getItemType());
+    		recipeItem.setAisle(groceryItemDao.findByName(searchTerm).getAisle());
     		}
     		recipeItem.setOnRecipe(true);
     		recipeItem.setOnList(false);
