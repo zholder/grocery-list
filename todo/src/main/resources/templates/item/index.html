@@ -39,6 +39,14 @@
 						
 		
 		<input type="submit" value="Delete Item(s)" />
+		
+	  	</form>
+	  	
+	  	<form th:if="${items.size()}" method="post">  
+	  		<span th:each="item : ${items}">
+		        <input type="hidden" name="itemIds" th:value="${item.id}" th:id="${item.id}"/>
+			</span>
+	  		<input type="submit" value="Clear List" />
 	  	</form>
 	  	
 	</body>
