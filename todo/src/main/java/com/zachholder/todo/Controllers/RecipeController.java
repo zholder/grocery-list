@@ -85,6 +85,11 @@ public class RecipeController {
     	User currentUser = findCurrentUser();
     	
     	if (errors.hasErrors() || recipe.getName() == null) {
+    		if (userIsLoggedIn()){
+    			model.addAttribute("loggedInUser", "");
+    		} else {
+    			model.addAttribute("loggedInUser", SecurityContextHolder.getContext().getAuthentication().getName());
+    		}
         	model.addAttribute("recipes", recipeDao.findAllByOwner(currentUser));
         	model.addAttribute("title", currentUser.getFirstName() + "'s Recipes");
         	return "recipe/recipe";
@@ -124,7 +129,7 @@ public class RecipeController {
 		}
         model.addAttribute(recipe);
     	model.addAttribute("title", recipe.getName());
-    	model.addAttribute("item", new UserItem());
+    	model.addAttribute("userItem", new UserItem());
         return "recipe/recipeitems";
     }
     
@@ -136,9 +141,13 @@ public class RecipeController {
     	Recipe recipe = recipeDao.findById(recipeId).get();
     	
     	if (errors.hasErrors() || (item.getName() == null && itemIds == null)){
+    		if (userIsLoggedIn()){
+    			model.addAttribute("loggedInUser", "");
+    		} else {
+    			model.addAttribute("loggedInUser", SecurityContextHolder.getContext().getAuthentication().getName());
+    		}
     		model.addAttribute(recipe);
         	model.addAttribute("title", recipe.getName());
-        	model.addAttribute("item", item);
     		return "recipe/recipeitems";
     	}
     	

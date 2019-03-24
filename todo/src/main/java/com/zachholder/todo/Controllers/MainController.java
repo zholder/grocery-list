@@ -80,6 +80,11 @@ public class MainController {
     	User currentUser = findCurrentUser();
 
     	if (errors.hasErrors() || (item.getName() == null && itemIds == null)){
+    		if (userIsLoggedIn()){
+    			model.addAttribute("loggedInUser", "");
+    		} else {
+    			model.addAttribute("loggedInUser", SecurityContextHolder.getContext().getAuthentication().getName());
+    		}
         	model.addAttribute("items", userItemDao.findAllByOwnerAndOnListOrderByAisleAscNameAsc(currentUser, true));
         	model.addAttribute("title", currentUser.getFirstName() + "'s Grocery List");
     		return "item/index";
@@ -182,6 +187,11 @@ public class MainController {
     public String processEditForm(@ModelAttribute @Valid UserItem userItem, Errors errors, @PathVariable int itemId, Model model){
 
     	if (errors.hasErrors()){
+    		if (userIsLoggedIn()){
+    			model.addAttribute("loggedInUser", "");
+    		} else {
+    			model.addAttribute("loggedInUser", SecurityContextHolder.getContext().getAuthentication().getName());
+    		}
         	model.addAttribute("title", "Edit " + userItem.getName());
     		model.addAttribute(userItem);
             model.addAttribute("itemTypes", groceryTypeDao.findAll());
