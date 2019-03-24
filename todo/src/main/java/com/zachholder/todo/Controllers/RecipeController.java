@@ -71,36 +71,20 @@ public class RecipeController {
     }
     
     @RequestMapping(value="", method = RequestMethod.POST)
-    public String addRecipe(Model model, @Valid @ModelAttribute Recipe recipe, Errors errors, int[] recipeIds) {
+    public String addRecipe(Model model, @Valid @ModelAttribute Recipe recipe, Errors errors) {
     	User currentUser = findCurrentUser();
-
     	
-    	if (errors.hasErrors() || (recipe.getName() == null && recipeIds == null)) {
+    	if (errors.hasErrors() || recipe.getName() == null) {
         	model.addAttribute("recipes", recipeDao.findAllByOwner(currentUser));
         	model.addAttribute("title", currentUser.getFirstName() + "'s Recipes");
         	return "recipe/recipe";
     	}
-    	
-    	if (recipeIds != null) {
-    		
-	    	for (int recipeId : recipeIds) {
-	    		Recipe currentRecipe = recipeDao.findById(recipeId).get();
-	    			for (UserItem recipeItem: currentRecipe.getRecipeItems()) {
-	    				recipeItem.setOnList(true);
-	    				userItemDao.save(recipeItem);
-	    			}
-	    		}
-	    		return "redirect:/";
-	        }
-    	
-    	
-    	if (recipeIds == null && recipe.getName().length() > 0) {
+	
+    	else {
     		recipe.setOwner(currentUser);
     		recipeDao.save(recipe);
         	return "redirect:/recipe/" + recipe.getId();
     	}
-    	
-    	return "recipe/recipe";
     }
     
     @RequestMapping(value = "", method = RequestMethod.POST, params="recipeId")
@@ -109,6 +93,15 @@ public class RecipeController {
     	return "redirect:/recipe";
     }
 
+    @RequestMapping(value = "", method = RequestMethod.POST, params="recipeToList")
+    public String addRecipeToList(Model model, @RequestParam int recipeToList){
+		Recipe currentRecipe = recipeDao.findById(recipeToList).get();
+		for (UserItem recipeItem: currentRecipe.getRecipeItems()) {
+			recipeItem.setOnList(true);
+			userItemDao.save(recipeItem);
+		}
+    	return "redirect:/recipe";
+    }   
     
     @RequestMapping(value = "{recipeId}", method = RequestMethod.GET)
     public String displayRecipeForm(Model model, @PathVariable int recipeId){

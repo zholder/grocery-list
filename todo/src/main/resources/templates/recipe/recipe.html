@@ -20,10 +20,14 @@
 		<form method="post">
  	    <table class="table">
 			<tr th:each="recipe : ${recipes}">
-			<td>
+<!-- 			<td>
 		        <input type="checkbox" name="recipeIds" th:value="${recipe.id}" th:id="${recipe.id}"/>
-			</td>
+			</td> -->
 			
+			<td>
+				<button type="submit" name="recipeToList" th:value="${recipe.id}" class="fas fa-plus"></button>
+			</td>
+
 			<td>
 				<label th:for="${recipe.id}">
 					<a th:href="@{'recipe/' + ${recipe.id}}" th:text="${recipe.name}"></a>
@@ -39,8 +43,7 @@
 			
 		    </tr>
 		</table>
-		<input th:if="${recipes.size()}" type="submit" value="Add Recipe(s) to List" />			
-	  	</form>
+	 </form>
 	  	
 	</body>
 </html>

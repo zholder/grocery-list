@@ -17,8 +17,8 @@
 		  	<input type="submit" value="Add Item" />
 		</form>
 		
-	    <form th:if="${items.size()}" method="post">
-	    <table class="table">
+	    <form  method="post">
+	    <table th:if="${items.size()}"class="table">
 			<tr th:each="item : ${items}">
 			
 			<td th:if="${item.checked}">
@@ -30,9 +30,7 @@
 			</td>
 			
 		    <td>
-			    <label th:for="${item.id}">
- 					<a th:href="@{'/edit/' + ${item.id}}" th:text="${item.name}"></a>
-			    </label>
+		    	<a th:href="@{'/edit/' + ${item.id}}" th:text="${item.name}"></a>
 			</td>				
 			
 			<td th:if="${item.type}" th:text="${item.type.name}">
@@ -48,10 +46,6 @@
 			</td>
 		    </tr>
 		</table>
-						
-<!-- 		
-		<input type="submit" value="Delete Item(s)" />
-		 -->
 	  	</form>
 	  	
 	  	<form th:if="${items.size()}" method="post">  
