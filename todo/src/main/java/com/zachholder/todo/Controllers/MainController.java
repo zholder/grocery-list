@@ -1,5 +1,6 @@
 package com.zachholder.todo.Controllers;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,7 +70,6 @@ public class MainController {
     	User currentUser = findCurrentUser();
 
     	if (errors.hasErrors() || (item.getName() == null && itemIds == null)){
-    		System.out.println("error");
         	model.addAttribute("items", userItemDao.findAllByOwnerAndOnListOrderByAisleAscNameAsc(currentUser, true));
         	model.addAttribute("title", currentUser.getFirstName() + "'s Grocery List");
     		return "item/index";
@@ -124,7 +124,7 @@ public class MainController {
     }
     
     @RequestMapping(value = "", method = RequestMethod.POST, params="itemId")
-    public String deleteIdm(Model model, @RequestParam int itemId){
+    public String deleteItem(Model model, @RequestParam int itemId){
     	UserItem currentUserItem = userItemDao.findById(itemId).get();
 		if (currentUserItem.isOnRecipe()) {
 			currentUserItem.setOnList(false);
@@ -134,7 +134,22 @@ public class MainController {
 		}
     	return "redirect:/";
     }
-
+    
+    @RequestMapping(value = "", method = RequestMethod.POST, params="unCheckItemId")
+    public String uncheckItem(Model model, @RequestParam int unCheckItemId){
+    	UserItem currentUserItem = userItemDao.findById(unCheckItemId).get();
+    	currentUserItem.setChecked(true);
+    	userItemDao.save(currentUserItem);
+    	return "redirect:/";
+    }
+    
+    @RequestMapping(value = "", method = RequestMethod.POST, params="checkItemId")
+    public String checkItem(Model model, @RequestParam int checkItemId){
+    	UserItem currentUserItem = userItemDao.findById(checkItemId).get();
+    	currentUserItem.setChecked(false);
+    	userItemDao.save(currentUserItem);
+    	return "redirect:/";
+    }
     
     @RequestMapping(value = "edit/{itemId}", method = RequestMethod.GET)
     public String displayEditForm(Model model, @PathVariable int itemId){

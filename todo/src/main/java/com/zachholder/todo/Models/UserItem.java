@@ -36,6 +36,8 @@ public class UserItem {
     
     private boolean onRecipe;
     
+    private boolean checked;
+    
 	public String getName() {
 		return name;
 	}
@@ -86,6 +88,14 @@ public class UserItem {
 
 	public void setOnRecipe(boolean onRecipe) {
 		this.onRecipe = onRecipe;
+	}
+
+	public boolean isChecked() {
+		return checked;
+	}
+
+	public void setChecked(boolean checked) {
+		this.checked = checked;
 	}
 
 	public UserItem() {

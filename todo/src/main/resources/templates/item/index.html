@@ -20,9 +20,15 @@
 	    <form th:if="${items.size()}" method="post">
 	    <table class="table">
 			<tr th:each="item : ${items}">
-			<td>
-		        <input type="checkbox" name="itemIds" th:value="${item.id}" th:id="${item.id}"/>
+			
+			<td th:if="${item.checked}">
+				<button type="submit" name="checkItemId" th:value="${item.id}" class="fas fa-check"></button>
 			</td>
+			
+			<td th:unless="${item.checked}">
+				<button type="submit" name="unCheckItemId" th:value="${item.id}"></button>
+			</td>
+			
 		    <td>
 			    <label th:for="${item.id}">
  					<a th:href="@{'/edit/' + ${item.id}}" th:text="${item.name}"></a>
@@ -43,9 +49,9 @@
 		    </tr>
 		</table>
 						
-		
+<!-- 		
 		<input type="submit" value="Delete Item(s)" />
-		
+		 -->
 	  	</form>
 	  	
 	  	<form th:if="${items.size()}" method="post">  
