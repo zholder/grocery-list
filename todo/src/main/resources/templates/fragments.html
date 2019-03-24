@@ -16,6 +16,7 @@
 <body>
 
 <nav th:fragment="navigation" class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
   <a class="navbar-brand" href="#">Grocery List</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -31,26 +32,26 @@
   	<li class="nav-item">
         <a class="nav-link" href="/recipe">My Recipes</a>
     </li>
-     
-    <li th:unless="${loggedInUser.length()}" class="nav-item">
-        <a class="nav-link" href="/login">Login</a>
-    </li>
-    
-    <li th:unless="${loggedInUser.length()}"class="nav-item">
-        <a class="nav-link" href="/signup">Sign Up</a>
-    </li>
-    
-    <li>
-    	<form th:if="${loggedInUser.length()}" th:action="@{/logout}" method="post">
-			<input type="submit" value="Sign Out"/>
- 		</form>
-    </li>
-    
-    
     </ul>
+    
+    <ul class="nav navbar-nav navbar-right">
+	    <li th:unless="${loggedInUser.length()}" class="nav-item">
+	        <a class="nav-link" href="/login">Login</a>
+	    </li>
+	    
+	    <li th:unless="${loggedInUser.length()}"class="nav-item">
+	        <a class="nav-link" href="/signup">Sign Up</a>
+	    </li>
+	    
+	    <li>
+	    	<form th:if="${loggedInUser.length()}" th:action="@{/logout}" method="post">
+				<button class="signout" type="Submit">Sign Out</button>
+	 		</form>
+	    </li>
+    </ul>
+		
   </div>
-  
-  
+  </div>
 
 </nav>
 		
