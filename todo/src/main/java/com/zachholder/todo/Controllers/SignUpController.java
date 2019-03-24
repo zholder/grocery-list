@@ -5,6 +5,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,10 +21,10 @@ public class SignUpController {
 	
 	@Autowired
 	private UserDao userDao;
-//	
-//    @Autowired
-//    protected AuthenticationManager authenticationManager;
 
+	private boolean userIsLoggedIn() {
+		return SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser");
+	}
     
 	public static String encryptePassword(String password) {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -33,6 +34,13 @@ public class SignUpController {
 	
 	@RequestMapping(value="signup")
     public String showSignUp(Model model) {  
+		
+		if (userIsLoggedIn()){
+			model.addAttribute("loggedInUser", "");
+		} else {
+			model.addAttribute("loggedInUser", SecurityContextHolder.getContext().getAuthentication().getName());
+		}
+		
     	model.addAttribute("title", "Sign Up for Grocery List");
     	model.addAttribute("user", new User());
         return "signup/signup";
@@ -64,6 +72,11 @@ public class SignUpController {
 		}
 		
 		if (checkedErrors) {
+			if (userIsLoggedIn()){
+				model.addAttribute("loggedInUser", "");
+			} else {
+				model.addAttribute("loggedInUser", SecurityContextHolder.getContext().getAuthentication().getName());
+			}
 	    	model.addAttribute("title", "Sign Up for Grocery List");
 	    	return "signup/signup";
 		}

@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
-<head th:replace="landingfragments :: head">
+<head th:replace="fragments :: head">
 </head>
 <body class="container">
+	<nav th:replace="fragments :: navigation"></nav>
+	
 	<div class="container">
 	    <div class="row">
 	        <div class="col-md-12">

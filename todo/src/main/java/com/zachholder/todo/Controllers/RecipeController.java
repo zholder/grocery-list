@@ -52,6 +52,10 @@ public class RecipeController {
     	return currentUser;
 	}
 	
+	private boolean userIsLoggedIn() {
+		return SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser");
+	}
+	
 	private String cleanUpSearch(String searchTerm) {
 		if (searchTerm != null && searchTerm.length() > 0 && searchTerm.toLowerCase().charAt(searchTerm.length() - 1) == 's') {
 			searchTerm = searchTerm.substring(0, searchTerm.length() - 1);
@@ -63,7 +67,13 @@ public class RecipeController {
     @RequestMapping(value = "")
     public String index(Model model) {  
     	User currentUser = findCurrentUser();
-
+    	
+		if (userIsLoggedIn()){
+			model.addAttribute("loggedInUser", "");
+		} else {
+			model.addAttribute("loggedInUser", SecurityContextHolder.getContext().getAuthentication().getName());
+		}
+		
     	model.addAttribute("recipes", recipeDao.findAllByOwner(currentUser));
     	model.addAttribute("title", currentUser.getFirstName() + "'s Recipes");
     	model.addAttribute("recipe", new Recipe());
@@ -105,8 +115,13 @@ public class RecipeController {
     
     @RequestMapping(value = "{recipeId}", method = RequestMethod.GET)
     public String displayRecipeForm(Model model, @PathVariable int recipeId){
-
     	Recipe recipe = recipeDao.findById(recipeId).get();
+    	
+		if (userIsLoggedIn()){
+			model.addAttribute("loggedInUser", "");
+		} else {
+			model.addAttribute("loggedInUser", SecurityContextHolder.getContext().getAuthentication().getName());
+		}
         model.addAttribute(recipe);
     	model.addAttribute("title", recipe.getName());
     	model.addAttribute("item", new UserItem());

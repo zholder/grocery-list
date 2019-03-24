@@ -47,6 +47,10 @@ public class MainController {
     	return currentUser;
 	}
 	
+	private boolean userIsLoggedIn() {
+		return SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser");
+	}
+	
 	private String cleanUpSearch(String searchTerm) {
 		if (searchTerm != null && searchTerm.length() > 0 && searchTerm.toLowerCase().charAt(searchTerm.length() - 1) == 's') {
 			searchTerm = searchTerm.substring(0, searchTerm.length() - 1);
@@ -57,6 +61,13 @@ public class MainController {
     @RequestMapping(value = "")
     public String index(Model model) {  
     	User currentUser = findCurrentUser();
+    	
+		if (userIsLoggedIn()){
+			model.addAttribute("loggedInUser", "");
+		} else {
+			model.addAttribute("loggedInUser", SecurityContextHolder.getContext().getAuthentication().getName());
+		}
+		
     	model.addAttribute("items", userItemDao.findAllByOwnerAndOnListOrderByAisleAscNameAsc(currentUser, true));
     	model.addAttribute("title", currentUser.getFirstName() + "'s Grocery List");
     	model.addAttribute("userItem", new UserItem());
@@ -151,9 +162,15 @@ public class MainController {
     }
     
     @RequestMapping(value = "edit/{itemId}", method = RequestMethod.GET)
-    public String displayEditForm(Model model, @PathVariable int itemId){
-
+    public String displayEditForm(Model model, @PathVariable int itemId) {
         UserItem userItem = userItemDao.findById(itemId).get();
+        
+		if (userIsLoggedIn()){
+			model.addAttribute("loggedInUser", "");
+		} else {
+			model.addAttribute("loggedInUser", SecurityContextHolder.getContext().getAuthentication().getName());
+		}
+		
     	model.addAttribute("title", "Edit " + userItem.getName());
         model.addAttribute(userItem);
         model.addAttribute("itemTypes", groceryTypeDao.findAll());
