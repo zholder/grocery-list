@@ -127,20 +127,7 @@ public class RecipeController {
     		return "recipe/recipeitems";
     	}
     	
-    	if (itemIds != null) {
-	    	for (int itemId : itemIds) {
-	    		UserItem theItem = userItemDao.findById(itemId).get();
-	    		if (! theItem.isOnList()) {
-	    			userItemDao.deleteById(itemId);
-	    		} else {
-		    		recipe.removeItem(itemId);
-		    		theItem.setOnRecipe(false);
-		    		// keeps on the user list
-	    		}
-		    	recipeDao.save(recipe);
-	        }
-    	}
-    	
+    	// adds and categorizes items but does not set on list
     	if (itemIds == null && recipeItem.getName().length() > 0) {
     		
         	String searchTerm = cleanUpSearch(recipeItem.getName()).toLowerCase();
@@ -164,6 +151,23 @@ public class RecipeController {
     	
     	return "redirect:/recipe/" + recipeId;
     }
+    
+    @RequestMapping(value = "{recipeId}", method = RequestMethod.POST, params="itemId")
+    public String deleteItem(Model model, @PathVariable int recipeId, @RequestParam int itemId){
+    	Recipe recipe = recipeDao.findById(recipeId).get();
+		UserItem theItem = userItemDao.findById(itemId).get();
+		
+		if (! theItem.isOnList()) {
+			userItemDao.deleteById(itemId);
+		} else {
+    		recipe.removeItem(itemId);
+    		theItem.setOnRecipe(false);
+    		// keeps on the user list
+		}
+    	recipeDao.save(recipe);
+    	return "redirect:/recipe/" + recipeId;
+    }
+    
     	
 }
 

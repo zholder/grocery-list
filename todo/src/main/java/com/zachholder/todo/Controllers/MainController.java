@@ -1,6 +1,5 @@
 package com.zachholder.todo.Controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -75,7 +74,7 @@ public class MainController {
     		return "item/index";
     	}
     	
-    	
+//    	Clears items from list by selecting clear item button. This could probably be refactored.
     	if (itemIds != null) {
 	    	for (int itemId : itemIds) {
 	    		UserItem currentUserItem = userItemDao.findById(itemId).get();

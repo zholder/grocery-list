@@ -22,11 +22,11 @@
 			<tr th:each="recipe : ${recipes}">
 <!-- 			<td>
 		        <input type="checkbox" name="recipeIds" th:value="${recipe.id}" th:id="${recipe.id}"/>
-			</td> -->
-			
+			</td> -->			
 			<td>
 				<button type="submit" name="recipeToList" th:value="${recipe.id}" class="fas fa-plus"></button>
 			</td>
+
 
 			<td>
 				<label th:for="${recipe.id}">
