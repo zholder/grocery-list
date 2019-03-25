@@ -2,47 +2,54 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head th:replace="fragments :: head"></head>
 <body>
-<nav th:replace="fragments :: navigation"></nav>
-<div class="container">
+	<nav th:replace="fragments :: navigation"></nav>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="row">
+					<div class="col-md-6 mx-auto">
+						<h1 th:text="${title}">Default Title</h1>
 
-<h1 th:text="${title}">Default Title</h1>
+						<form method="post" th:object="${userItem}" action="">
 
-	  	<form method="post" th:object="${userItem}">
-		    <div class="form-group">
-		        <label th:for="name"></label>
-		        <input class="form-control" th:field="*{name}" />
-		        <span th:errors="${userItem.name}" class="error"></span>
- 		    </div>
+							<div class="input-group mb-3">
+								<label th:for="name"></label> <input class="form-control"
+									th:field="*{name}" />
+								<div class="input-group-append">
+									<button class="btn btn-outline-secondary" type="submit">Add</button>
+								</div>
 
-		  	<input type="submit" value="Add Item" />
-		</form>
-		
-		
-		<form th:if="${recipe.recipeItems.size()}" method="post">
-	    <table class="table">
-			<tr th:each="item : ${recipe.recipeItems}">
 
-		    <td>
- 				<a th:href="@{'/edit/' + ${item.id}}" th:text="${item.name}"></a>
-			</td>				
-			
-			<td th:if="${item.type}" th:text="${item.type.name}">
-			</td>
-				
-			<td th:if="${item.aisle}" th:text="${item.aisle.name}">
-			</td>
-			
-			<td>
-				<label th:for="${item.id}">
-					<button type="submit" name="itemId" th:value="${item.id}" class="fas fa-trash-alt"></button>
-				</label>
-			</td>	
-		    </tr>
-		</table>
-						
-		
-<!-- 		<input type="submit" value="Delete Item" /> -->
-	  	</form>
-	  </div>	
-	</body>
+							</div>
+							<div th:errors="${userItem.name}" class="alert alert-danger"
+								role="alert"></div>
+						</form>
+
+
+						<form th:if="${recipe.recipeItems.size()}" method="post" action="">
+							<table class="table">
+								<tr th:each="item : ${recipe.recipeItems}">
+
+									<td><a th:href="@{'/edit/' + ${item.id}}"
+										th:text="${item.name}"></a></td>
+
+									<td th:if="${item.type}" th:text="${item.type.name}"></td>
+
+									<td th:if="${item.aisle}" th:text="${item.aisle.name}"></td>
+
+									<td><label th:for="${item.id}">
+											<button type="submit" name="itemId" th:value="${item.id}"
+												class="fas fa-trash-alt"></button>
+									</label></td>
+								</tr>
+							</table>
+
+
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
 </html>

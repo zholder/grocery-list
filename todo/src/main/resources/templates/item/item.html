@@ -6,41 +6,50 @@
 <nav th:replace="fragments :: navigation"></nav>
 
 <div class="container">
-<h1 th:text="${title}">Default Title</h1>
-
-<form method="post" style="max-width:600px" th:object="${userItem}">
-<input type="hidden" th:value="${userItem.id}" name="itemId" />
-
-    <div class="form-group">
-        <label th:for="name">Name</label>
-        <input class="form-control" th:field="*{name}" />
-        <span th:errors="*{name}" class="error"></span>
-    </div>
-
-     <div class="form-group">
-        <label th:for="type">Type</label>
-        <select th:field="*{type}">
-            <option th:each="itemType : ${itemTypes}"
-                    th:text="${itemType.name}"
-                    th:value="${itemType.id}">
-            </option>
-        </select>
-    </div>
-
-     <div class="form-group">
-        <label th:for="aisle">Type</label>
-        <select th:field="*{aisle}">
-            <option th:each="aisle : ${aisles}"
-                    th:text="${aisle.name}"
-                    th:value="${aisle.id}">
-            </option>
-        </select>
-    </div>
-			
-    <input type="submit" value="Submit Edit" />
-    
-</form>
-
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+               <div class="col-md-6 mx-auto">
+					<h1 th:text="${title}">Default Title</h1>
+					
+					<form method="post" style="max-width:600px" th:object="${userItem}">
+					<input type="hidden" th:value="${userItem.id}" name="itemId" />
+						<div th:errors="*{name}" class="alert alert-danger" role="alert"></div>
+					
+					    <div class="form-group">
+					        <input class="form-control" th:field="*{name}" />
+					    </div>
+						
+						<div class="form-row">
+					
+					      <div class="form-group col-md-6">
+					     	<label th:for="type">Type</label>
+					        <select class="form-control" th:field="*{type}">
+					            <option th:each="itemType : ${itemTypes}"
+					                    th:text="${itemType.name}"
+					                    th:value="${itemType.id}">
+					            </option>
+					        </select>
+					    </div>
+					
+    					<div class="form-group col-md-6">
+					        <label th:for="aisle">Aisle</label>
+					        <select class="form-control" th:field="*{aisle}">
+					            <option th:each="aisle : ${aisles}"
+					                    th:text="${aisle.name}"
+					                    th:value="${aisle.id}">
+					            </option>
+					        </select>
+					    </div>
+						</div>		
+					    <div class="col text-center">
+							<button class="btn btn-outline-secondary clear btn-block" type="submit">Update</button>
+					  	</div>
+					</form>
+					</div>	
+			</div>	
+		</div>	
+	</div>	
 </div>	  	
 </body>
 </html>

@@ -11,19 +11,19 @@
                <div class="col-md-6 mx-auto">
 					<h1 th:text="${title}">Default Title</h1>
 			
-			        <form method="post" style="max-width:600px;" th:object="${userItem}">
+			        <form method="post" style="max-width: 600px;" th:object="${userItem}" action="">
 					 <div class="input-group mb-3">
 						  <label th:for="name"></label>
 						  <input type="text" class="form-control" placeholder="Add an item" th:field="*{name}">
 						  <div class="input-group-append">
 						    <button class="btn btn-outline-secondary" type="submit">Add</button>
 						  </div>
-						</div> 
-						<div th:errors="${userItem.name}" class="alert alert-danger" role="alert">						
 						</div>
-					</form>
+							<div th:errors="${userItem.name}" class="alert alert-danger"
+								role="alert"></div>
+						</form>
 					
-				    <form  method="post">
+				    <form  method="post" action="">
 					    <table th:if="${items.size()}"class="table">
 					     	<tr class="custom-head">
 								<th></th>
@@ -61,7 +61,7 @@
 						</table>
 					  	</form>
 					  	
-					  	<form th:if="${items.size()}" method="post">  
+					  	<form th:if="${items.size()}" method="post" action="">  
 					  		<span th:each="item : ${items}">
 						        <input type="hidden" name="itemIds" th:value="${item.id}" th:id="${item.id}"/>
 							</span>
