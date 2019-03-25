@@ -18,24 +18,24 @@
 	                            <h3 class="mb-0">Login</h3>
 	                        </div>
 	                        <div class="card-body">
-	                 
-	                            <form class="form" role="form" method="POST">
-	                                <div class="form-group">                                
-	                                    <label for="username">Email</label>
-	                                    <input type="text" class="form-control form-control-med rounded-0" name="username">
-	                                </div>
-	                                <div class="form-group">                                
-	                                    <label>Password</label>
-	                                    <input type="password" class="form-control form-control-med rounded-0" name="password">
-	                                    <div th:if="${param.error}">
-								            Invalid username and password.
-								        </div>
-								        <div th:if="${param.logout}">
+	                  <div th:if="${param.logout}" class="alert alert-success" role="alert">
 								            You have been logged out.
 								        </div>
+								 <div th:if="${param.error}" class="alert alert-danger" role="alert">
+								            Invalid username or password.
+								        </div>
+	                            <form class="form" role="form" method="POST">
+	                                <div class="form-group">                                
+	                                    <input type="text" class="form-control form-control-med rounded-0" name="username" placeholder="Email">
 	                                </div>
-	                                <a href="/signup">Sign Up</a>
-	                                <button type="submit" class="btn btn-success btn-med float-right" id="btnLogin">Login</button>
+	                                <div class="form-group">                                
+	                                    <input type="password" class="form-control form-control-med rounded-0" name="password" placeholder="Password">
+	                                    
+								       
+	                                </div>
+	                                <div class="col text-center">
+							  			<button class="btn btn-outline-secondary clear btn-block" type="submit">Login</button>
+							  		</div>
 	                            </form>
 	                        </div>
 	                        <!--/card-block-->
