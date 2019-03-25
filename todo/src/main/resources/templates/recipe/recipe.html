@@ -5,46 +5,52 @@
 
 <nav th:replace="fragments :: navigation"></nav>
 <div class="container">
-<h1 th:text="${title}">Default Title</h1>
-
-        <form method="post" style="max-width:600px;" th:object="${recipe}">
-		    <div class="form-group">
-		        <label th:for="name"></label>
-		        <input class="form-control" th:field="*{name}" />
-		        <span th:errors="${recipe.name}" class="error"></span>
-		    </div>
-
-		  	<input type="submit" value="Add Recipe" />
-		</form>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+               <div class="col-md-6 mx-auto">	
+					<h1 th:text="${title}">Default Title</h1>
 		
-		<form method="post">
- 	    <table class="table">
-			<tr th:each="recipe : ${recipes}">
-<!-- 			<td>
-		        <input type="checkbox" name="recipeIds" th:value="${recipe.id}" th:id="${recipe.id}"/>
-			</td> -->			
-			<td>
-				<button type="submit" name="recipeToList" th:value="${recipe.id}" class="fas fa-plus"></button>
-			</td>
-
-
-			<td>
-				<label th:for="${recipe.id}">
-					<a th:href="@{'recipe/' + ${recipe.id}}" th:text="${recipe.name}"></a>
-				</label>
+					<form method="post" style="max-width:600px;" th:object="${recipe}">
+						<div class="input-group mb-3">
+							  <label th:for="name"></label>
+							  <input type="text" class="form-control" placeholder="Add a Recipe" th:field="*{name}">
+							  <div class="input-group-append">
+							    <button class="btn btn-outline-secondary" type="submit">Add</button>
+							    
+							  </div>
+							</div> 
+							<div th:errors="${recipe.name}" class="alert alert-danger" role="alert">						
+						</div>
+					</form>
+						<form method="post">
+				 	    <table class="table">
+							<tr th:each="recipe : ${recipes}">
+							<td>
+								<button type="submit" name="recipeToList" th:value="${recipe.id}" class="fas fa-plus"></button>
+							</td>
 				
-			</td>	
-			
-			<td>
-				<label th:for="${recipe.id}">
-					<button type="submit" name="recipeId" th:value="${recipe.id}" class="fas fa-trash-alt"></button>
-				</label>
-			</td>			
-			
-		    </tr>
-		</table>
-	 </form>
-	  </div>
-	  	
+				
+							<td>
+								<label th:for="${recipe.id}">
+									<a th:href="@{'recipe/' + ${recipe.id}}" th:text="${recipe.name}"></a>
+								</label>
+								
+							</td>	
+							
+							<td>
+								<label th:for="${recipe.id}">
+									<button type="submit" name="recipeId" th:value="${recipe.id}" class="fas fa-trash-alt"></button>
+								</label>
+							</td>			
+							
+								    </tr>
+								</table>
+							 </form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>
