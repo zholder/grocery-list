@@ -5,56 +5,76 @@
 
 <nav th:replace="fragments :: navigation"></nav>
 <div class="container">
-<h1 th:text="${title}">Default Title</h1>
-
-        <form method="post" style="max-width:600px;" th:object="${userItem}">
-		    <div class="form-group">
-		        <label th:for="name"></label>
-		        <input class="form-control" th:field="*{name}" />
-		        <span th:errors="${userItem.name}" class="error"></span>
-		    </div>
-				
-		  	<input type="submit" value="Add Item" />
-		</form>
-		
-	    <form  method="post">
-	    <table th:if="${items.size()}"class="table">
-			<tr th:each="item : ${items}">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+               <div class="col-md-6 mx-auto">
+					<h1 th:text="${title}">Default Title</h1>
 			
-			<td th:if="${item.checked}">
-				<button type="submit" name="checkItemId" th:value="${item.id}" class="fas fa-check"></button>
-			</td>
-			
-			<td th:unless="${item.checked}">
-				<button type="submit" name="unCheckItemId" th:value="${item.id}"></button>
-			</td>
-			
-		    <td>
-		    	<a th:href="@{'/edit/' + ${item.id}}" th:text="${item.name}"></a>
-			</td>				
-			
-			<td th:if="${item.type}" th:text="${item.type.name}">
-			</td>
-				
-			<td th:if="${item.aisle}" th:text="${item.aisle.name}">
-			</td>
-			
-			<td>
-				<label th:for="${item.id}">
-					<button type="submit" name="itemId" th:value="${item.id}" class="fas fa-trash-alt"></button>
-				</label>
-			</td>
-		    </tr>
-		</table>
-	  	</form>
-	  	
-	  	<form th:if="${items.size()}" method="post">  
-	  		<span th:each="item : ${items}">
-		        <input type="hidden" name="itemIds" th:value="${item.id}" th:id="${item.id}"/>
-			</span>
-	  		<input type="submit" value="Clear List" />
-	  	</form>
-	  	</div>
-	  	
+			        <form method="post" style="max-width:600px;" th:object="${userItem}">
+					 <div class="input-group mb-3">
+						  <label th:for="name"></label>
+						  <input type="text" class="form-control" placeholder="Add an item" th:field="*{name}">
+						  <div class="input-group-append">
+						    <button class="btn btn-outline-secondary" type="submit">Add</button>
+						    
+						  </div>
+						</div> 
+						<div th:errors="${userItem.name}" class="alert alert-danger" role="alert"></div>
+					</form>
+					
+				    <form  method="post">
+					    <table th:if="${items.size()}"class="table">
+					     	<tr class="custom-head">
+								<th></th>
+								<th>Item</th>
+								<th>Category</th>
+								<th>Aisle</th>
+								<th></th>
+							</tr>
+							<tr th:each="item : ${items}">
+							
+							<td th:if="${item.checked}">
+								<button type="submit" name="checkItemId" th:value="${item.id}" class="btn btn-outline-dark item-button">✓</button>
+							</td>
+							
+							<td th:unless="${item.checked}">
+								<button type="submit" name="unCheckItemId" th:value="${item.id}" class="btn btn-outline-dark checked item-button">✓</button>
+							</td>
+							
+						    <td>
+						    	<a th:href="@{'/edit/' + ${item.id}}" th:text="${item.name}"></a>
+							</td>				
+							
+							<td th:if="${item.type}" th:text="${item.type.name}">
+							</td>
+								
+							<td th:if="${item.aisle}" th:text="${item.aisle.name}">
+							</td>
+							
+							<td>
+								<label th:for="${item.id}">
+									<button type="submit" name="itemId" th:value="${item.id}" class="btn btn-outline-secondary fas fa-trash-alt item-button"></button>
+								</label>
+							</td>
+						    </tr>
+						</table>
+					  	</form>
+					  	
+					  	<form th:if="${items.size()}" method="post">  
+					  		<span th:each="item : ${items}">
+						        <input type="hidden" name="itemIds" th:value="${item.id}" th:id="${item.id}"/>
+							</span>
+							<div class="col text-center">
+							
+					  		<button class="btn btn-outline-secondary clear btn-block" type="submit">Clear List</button>
+					  		</div>
+					  		
+					  	</form>
+					  	</div>
+	  		  		</div>
+	  			</div>
+	  		</div>
+		</div>
 	</body>
 </html>
