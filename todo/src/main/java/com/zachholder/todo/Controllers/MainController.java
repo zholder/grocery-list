@@ -68,7 +68,7 @@ public class MainController {
 			model.addAttribute("loggedInUser", SecurityContextHolder.getContext().getAuthentication().getName());
 		}
 		
-    	model.addAttribute("items", userItemDao.findAllByOwnerAndOnListOrderByAisleAscNameAsc(currentUser, true));
+    	model.addAttribute("items", userItemDao.findAllByOwnerAndOnListOrderByAisleAscTypeAscNameAsc(currentUser, true));
     	model.addAttribute("title", currentUser.getFirstName() + "'s Grocery List");
     	model.addAttribute("userItem", new UserItem());
 
@@ -85,7 +85,7 @@ public class MainController {
     		} else {
     			model.addAttribute("loggedInUser", SecurityContextHolder.getContext().getAuthentication().getName());
     		}
-        	model.addAttribute("items", userItemDao.findAllByOwnerAndOnListOrderByAisleAscNameAsc(currentUser, true));
+        	model.addAttribute("items", userItemDao.findAllByOwnerAndOnListOrderByAisleAscTypeAscNameAsc(currentUser, true));
         	model.addAttribute("title", currentUser.getFirstName() + "'s Grocery List");
     		return "item/index";
     	}
@@ -96,6 +96,7 @@ public class MainController {
 	    		UserItem currentUserItem = userItemDao.findById(itemId).get();
 	    		if (currentUserItem.isOnRecipe()) {
 	    			currentUserItem.setOnList(false);
+	    			currentUserItem.setChecked(false);
 	    			userItemDao.save(currentUserItem);
 	    		} else {
 		    		userItemDao.deleteById(itemId);

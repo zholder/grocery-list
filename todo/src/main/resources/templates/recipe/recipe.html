@@ -11,19 +11,19 @@
                <div class="col-md-6 mx-auto">	
 					<h1 th:text="${title}">Default Title</h1>
 		
-					<form method="post" style="max-width:600px;" th:object="${recipe}">
+					<form method="post" style="max-width: 600px;" th:object="${recipe}" action="">
 						<div class="input-group mb-3">
 							  <label th:for="name"></label>
 							  <input type="text" class="form-control" placeholder="Add a Recipe" th:field="*{name}">
-							  <div class="input-group-append">
-							    <button class="btn btn-outline-secondary" type="submit">Add</button>
-							    
-							  </div>
+								<div class="input-group-append">
+									<button class="btn btn-outline-secondary" type="submit">Add</button>
+
+								</div>
 							</div> 
 							<div th:errors="${recipe.name}" class="alert alert-danger" role="alert">						
 						</div>
 					</form>
-						<form method="post">
+						<form method="post" action="">
 				 	    <table class="table">
 							<tr th:each="recipe : ${recipes}">
 							<td>

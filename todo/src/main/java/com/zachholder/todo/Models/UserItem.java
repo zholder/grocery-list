@@ -17,7 +17,7 @@ public class UserItem {
 	@GeneratedValue
     private int id;
 
-    @Size(min=2, max=20)
+    @Size(min=2, max=40)
 	private String name;
 
     @ManyToOne

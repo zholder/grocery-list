@@ -5,50 +5,53 @@
 
 <body>
 	<nav th:replace="fragments :: navigation"></nav>
-	
+
 	<div class="container">
-	    <div class="row">
-	        <div class="col-md-12">
-	            <div class="row">
-	                <div class="col-md-6 mx-auto">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="row">
+					<div class="col-md-6 mx-auto">
 						<h1>Grocery List</h1>
-	                    <!-- form card login -->
-	                    <div class="card rounded-0">
-	                        <div class="card-header">
-	                            <h3 class="mb-0">Login</h3>
-	                        </div>
-	                        <div class="card-body">
-	                  <div th:if="${param.logout}" class="alert alert-success" role="alert">
-								            You have been logged out.
-								        </div>
-								 <div th:if="${param.error}" class="alert alert-danger" role="alert">
-								            Invalid username or password.
-								        </div>
-	                            <form class="form" role="form" method="POST">
-	                                <div class="form-group">                                
-	                                    <input type="text" class="form-control form-control-med rounded-0" name="username" placeholder="Email">
-	                                </div>
-	                                <div class="form-group">                                
-	                                    <input type="password" class="form-control form-control-med rounded-0" name="password" placeholder="Password">
-	                                    
-								       
-	                                </div>
-	                                <div class="col text-center">
-							  			<button class="btn btn-outline-secondary clear btn-block" type="submit">Login</button>
-							  		</div>
-	                            </form>
-	                        </div>
-	                        <!--/card-block-->
-	                    </div>
-	                    <!-- /form card login -->
-	                </div>
-	            </div>
-	            <!--/row-->
-	        </div>
-	        <!--/col-->
-	    </div>
-	    <!--/row-->
+						<!-- form card login -->
+						<div class="card rounded-0">
+							<div class="card-header">
+								<h3 class="mb-0">Login</h3>
+							</div>
+							<div class="card-body">
+								<div th:if="${param.logout}" class="alert alert-success"
+									role="alert">You have been logged out.</div>
+								<div th:if="${param.error}" class="alert alert-danger"
+									role="alert">Invalid username or password.</div>
+								<form class="form" role="form" method="POST" action="">
+									<div class="form-group">
+										<input type="text"
+											class="form-control form-control-med rounded-0"
+											name="username" placeholder="Email">
+									</div>
+									<div class="form-group">
+										<input type="password"
+											class="form-control form-control-med rounded-0"
+											name="password" placeholder="Password">
+
+
+									</div>
+									<div class="col text-center">
+										<button class="btn btn-outline-secondary clear btn-block"
+											type="submit">Login</button>
+									</div>
+								</form>
+							</div>
+							<!--/card-block-->
+						</div>
+						<!-- /form card login -->
+					</div>
+				</div>
+				<!--/row-->
+			</div>
+			<!--/col-->
+		</div>
+		<!--/row-->
 	</div>
 	<!--/container-->
-    </body>
+</body>
 </html>

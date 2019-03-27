@@ -25,7 +25,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.usersByUsernameQuery("select email, password, enabled from user where email=?")
 	    .authoritiesByUsernameQuery("select email, 'ROLE_USER' from user where email=?");
     }
-
     
     @Override
     protected void configure(HttpSecurity http) throws Exception {

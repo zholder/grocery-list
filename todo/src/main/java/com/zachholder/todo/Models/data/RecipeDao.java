@@ -15,5 +15,5 @@ import com.zachholder.todo.Models.User;
 public interface RecipeDao  extends CrudRepository <Recipe, Integer>{
 	
 	public List<Recipe> findAllByOwner(User owner);
-	
+
 }
